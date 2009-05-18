@@ -14,13 +14,11 @@ package com.hydraframework.core.mvc.patterns.facade {
 	import com.hydraframework.core.mvc.patterns.plugin.Plugin;
 	import com.hydraframework.core.mvc.patterns.proxy.Proxy;
 	import com.hydraframework.core.mvc.patterns.relay.Relay;
-	
 	import flash.events.EventPhase;
+	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
-	
 	import mx.core.IUIComponent;
 	import mx.events.FlexEvent;
-	
 	import nl.demonsters.debugger.MonsterDebugger;
 
 	public class Facade extends Relay implements IFacade {
@@ -30,6 +28,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 		private var mediatorMap:Array;
 		private var proxyMap:Array;
 		private var pluginMap:Array;
+		private var delegateMap:Array;
 		private var debugger:MonsterDebugger;
 
 		public function Facade(name:String = null, component:IUIComponent = null) {
@@ -66,6 +65,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 			if (notification.target == this && notification.eventPhase == EventPhase.AT_TARGET) {
 				var commandList:Array = this.retrieveCommandList(notification.name);
 				var command:ICommand;
+
 				for (var s:String in commandList) {
 					command = ICommand(commandList[s]);
 					command.execute(notification);
@@ -181,6 +181,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 			mediatorMap = [];
 			proxyMap = [];
 			pluginMap = [];
+			delegateMap = [];
 			/*
 			   Register Relays with the Facade.
 			 */
@@ -207,6 +208,10 @@ package com.hydraframework.core.mvc.patterns.facade {
 			var s:String;
 			super.dispose();
 			this.removeCore();
+
+			for (s in delegateMap) {
+				delegateMap[s] = null;
+			}
 
 			for (s in pluginMap) {
 				removePlugin(s);
@@ -442,13 +447,56 @@ package com.hydraframework.core.mvc.patterns.facade {
 
 		/*
 		   -----------------------------------------------------------------------
+		   DELEGATES
+		   -----------------------------------------------------------------------
+		 */ //
+		/**
+		 * Registers a delegate with the core.
+		 *
+		 * @param	Class
+		 * @return	void
+		 */
+		public function registerDelegate(delegate:Class):void {
+			var delegateClass:String = getQualifiedClassName(delegate);
+			delegateMap[delegateClass] = delegate;
+			trace("Registering delegate:", delegateClass);
+		}
+
+		/**
+		 * Retrieves the delegate that implements delegateInterface.
+		 *
+		 * @param	Class
+		 * @return	ICommand
+		 */
+		public function retrieveDelegate(delegateInterface:Class):Class {
+			for (var s:String in delegateMap) {
+				if (new(delegateMap[s] as Class) is delegateInterface) {
+					return delegateMap[s] as Class;
+				}
+			}
+			return null;
+		}
+
+		/**
+		 * Removes a specific delegate.
+		 *
+		 * @param	String
+		 * @param	Class
+		 * @return	void
+		 */
+		public function removeDelegate(delegate:Class):void {
+			var delegateClass:String = getQualifiedClassName(delegate);
+			delegateMap[delegateClass] = null;
+		}
+
+		/*
+		   -----------------------------------------------------------------------
 		   CORE
 		   -----------------------------------------------------------------------
 		 */ //
 		/**
 		 * Override this method to register individual MVC actors with the
-		 * Facade. This is where you will call your registerCommand(),
-		 * registerMediator(), registerProxy(), and registerPlugin() methods. 
+		 * Facade. This is where you will call your register[Relay]() methods.
 		 * The order of their registration is not important.
 		 */
 		public function registerCore():void {

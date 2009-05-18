@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <flexLibProperties version="1">
 <includeClasses>
-<classEntry path="com.hydraframework.core.HydraApplication"/>
-<classEntry path="com.hydraframework.core.HydraFramework"/>
+<classEntry path="nl.demonsters.debugger.MonsterDebugger"/>
+<classEntry path="com.hydraframework.core.mvc.patterns.proxy.Proxy"/>
+<classEntry path="com.hydraframework.core.mvc.patterns.command.SimpleCommand"/>
 <classEntry path="com.hydraframework.core.mvc.events.Notification"/>
-<classEntry path="com.hydraframework.core.mvc.events.Phase"/>
+<classEntry path="com.hydraframework.core.mvc.patterns.mediator.Mediator"/>
+<classEntry path="com.hydraframework.core.mvc.patterns.plugin.Plugin"/>
 <classEntry path="com.hydraframework.core.mvc.interfaces.ICommand"/>
+<classEntry path="com.hydraframework.core.HydraApplication"/>
+<classEntry path="com.hydraframework.core.mvc.interfaces.IRelay"/>
+<classEntry path="com.hydraframework.core.HydraFramework"/>
 <classEntry path="com.hydraframework.core.mvc.interfaces.IFacade"/>
 <classEntry path="com.hydraframework.core.mvc.interfaces.IMediator"/>
 <classEntry path="com.hydraframework.core.mvc.interfaces.IPlugin"/>
-<classEntry path="com.hydraframework.core.mvc.interfaces.IProxy"/>
-<classEntry path="com.hydraframework.core.mvc.interfaces.IRelay"/>
-<classEntry path="com.hydraframework.core.mvc.patterns.command.SimpleCommand"/>
 <classEntry path="com.hydraframework.core.mvc.patterns.facade.Facade"/>
-<classEntry path="com.hydraframework.core.mvc.patterns.mediator.Mediator"/>
-<classEntry path="com.hydraframework.core.mvc.patterns.plugin.Plugin"/>
-<classEntry path="com.hydraframework.core.mvc.patterns.proxy.Proxy"/>
 <classEntry path="com.hydraframework.core.mvc.patterns.relay.Relay"/>
-<classEntry path="nl.demonsters.debugger.MonsterDebugger"/>
+<classEntry path="com.hydraframework.core.mvc.events.Phase"/>
+<classEntry path="com.hydraframework.core.mvc.interfaces.IProxy"/>
 </includeClasses>
 <includeResources/>
 <namespaceManifests/>

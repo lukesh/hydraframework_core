@@ -18,6 +18,9 @@ package com.hydraframework.core.mvc.interfaces {
 		function registerPlugin(plugin:IPlugin):void;
 		function retrievePlugin(pluginName:String):IPlugin;
 		function removePlugin(pluginName:String):void;
+		function registerDelegate(delegate:Class):void;
+		function retrieveDelegate(delegateInterface:Class):Class;
+		function removeDelegate(delegate:Class):void;
 		function registerCore():void;
 		function removeCore():void;
 	}

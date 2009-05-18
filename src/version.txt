@@ -14,10 +14,14 @@ Release Date: 05/11/2009
 -------------------------------------------------------------------------------
 
 0.3.0	Restructured the HydraMVC implementation into the HydraFramework 
-		project. Added plugin architecture to the system. Component must now
-		implement IUIComponent. Fixed a small event priority bug where request
-		phased notifications would be handled after response phased if there
-		was no latency in certain circumstances. 
+		project. Added plugin architecture to the system. Added a delegate map
+		to the facade to faciliate an IoC implementation.
+		
+		Component must now implement IUIComponent. 
+		
+		Fixed a small event priority bug where request phased notifications
+		would be handled after response phased if there was no latency in
+		certain circumstances. 
 
 0.2.0	Refactored initialization sequence. Facades may or may not require
 		a view component, but it's recommended. If you don't bind a facade

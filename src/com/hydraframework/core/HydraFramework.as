@@ -4,7 +4,6 @@
  */
 package com.hydraframework.core {
 	import flash.events.EventDispatcher;
-	import flash.utils.Dictionary;
 	import mx.core.IUIComponent;
 
 	public class HydraFramework extends EventDispatcher {

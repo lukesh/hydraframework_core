@@ -2,13 +2,13 @@
 <flexLibProperties version="1">
 <includeClasses>
 <classEntry path="nl.demonsters.debugger.MonsterDebugger"/>
+<classEntry path="com.hydraframework.core.HydraCore"/>
 <classEntry path="com.hydraframework.core.mvc.patterns.proxy.Proxy"/>
 <classEntry path="com.hydraframework.core.mvc.patterns.command.SimpleCommand"/>
 <classEntry path="com.hydraframework.core.mvc.events.Notification"/>
 <classEntry path="com.hydraframework.core.mvc.patterns.mediator.Mediator"/>
 <classEntry path="com.hydraframework.core.mvc.patterns.plugin.Plugin"/>
 <classEntry path="com.hydraframework.core.mvc.interfaces.ICommand"/>
-<classEntry path="com.hydraframework.core.HydraApplication"/>
 <classEntry path="com.hydraframework.core.mvc.interfaces.IRelay"/>
 <classEntry path="com.hydraframework.core.HydraFramework"/>
 <classEntry path="com.hydraframework.core.mvc.interfaces.IFacade"/>

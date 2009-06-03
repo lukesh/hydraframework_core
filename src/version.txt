@@ -7,15 +7,18 @@ Release Date: 05/11/2009
     Platform: ActionScript 3 (Flex)
      Version: 0
     Revision: 3
-       Minor: 0   
+       Minor: 1  
       Author: Francis Lukesh <fran@lukesh.com, flukesh@andculture.com>
      License: Creative Commons Attribution 3.0 United States License
 
 -------------------------------------------------------------------------------
 
+0.3.1	Ensured that Commands and Delegates were returning a new instance on
+		retrieveCommand and retrieveDelegate.
+		
 0.3.0	Restructured the HydraMVC implementation into the HydraFramework 
 		project. Added plugin architecture to the system. Added a delegate map
-		to the facade to faciliate an IoC implementation.
+		to the facade to facilitate an IoC implementation.
 		
 		Component must now implement IUIComponent. 
 		

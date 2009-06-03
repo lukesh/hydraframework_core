@@ -14,11 +14,13 @@ package com.hydraframework.core.mvc.patterns.facade {
 	import com.hydraframework.core.mvc.patterns.plugin.Plugin;
 	import com.hydraframework.core.mvc.patterns.proxy.Proxy;
 	import com.hydraframework.core.mvc.patterns.relay.Relay;
+	
 	import flash.events.EventPhase;
-	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
+	
 	import mx.core.IUIComponent;
 	import mx.events.FlexEvent;
+	
 	import nl.demonsters.debugger.MonsterDebugger;
 
 	public class Facade extends Relay implements IFacade {
@@ -67,7 +69,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 				var command:ICommand;
 
 				for (var s:String in commandList) {
-					command = ICommand(commandList[s]);
+					command = ICommand(new (commandList[s] as Class)(this));
 					command.execute(notification);
 				}
 			} else {
@@ -249,7 +251,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 
 			if (!commandMap[notificationName])
 				commandMap[notificationName] = [];
-			commandMap[notificationName][commandClass] = new command(this);
+			commandMap[notificationName][commandClass] = command;
 			trace("Registering command:", notificationName, "->", commandClass);
 		}
 
@@ -263,7 +265,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 		 */
 		public function retrieveCommand(notificationName:String, commandClass:String):ICommand {
 			var commandList:Array = retrieveCommandList(notificationName);
-			return commandList ? commandList[commandClass] as ICommand : null;
+			return commandList ? new (commandList[commandClass] as Class)() as ICommand : null;
 		}
 
 		/**
@@ -288,6 +290,8 @@ package com.hydraframework.core.mvc.patterns.facade {
 
 			if (commandMap[notificationName])
 				commandMap[notificationName][commandClass] = null;
+			
+			trace("Removing command:", notificationName, "->", commandClass);
 		}
 
 		/*
@@ -468,10 +472,12 @@ package com.hydraframework.core.mvc.patterns.facade {
 		 * @param	Class
 		 * @return	ICommand
 		 */
-		public function retrieveDelegate(delegateInterface:Class):Class {
+		public function retrieveDelegate(delegateInterface:Class):Object {
+			var obj:Object;
 			for (var s:String in delegateMap) {
-				if (new(delegateMap[s] as Class) is delegateInterface) {
-					return delegateMap[s] as Class;
+				obj = new (delegateMap[s] as Class)();
+				if (obj is delegateInterface) {
+					return obj;
 				}
 			}
 			return null;
@@ -487,6 +493,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 		public function removeDelegate(delegate:Class):void {
 			var delegateClass:String = getQualifiedClassName(delegate);
 			delegateMap[delegateClass] = null;
+			trace("Removing delegate:", delegateClass);
 		}
 
 		/*

@@ -212,7 +212,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 			this.removeCore();
 
 			for (s in delegateMap) {
-				delegateMap[s] = null;
+				delete delegateMap[s];
 			}
 
 			for (s in pluginMap) {
@@ -228,7 +228,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 			}
 
 			for (s in commandMap) {
-				commandMap[s] = null;
+				delete commandMap[s];
 			}
 		}
 
@@ -288,8 +288,9 @@ package com.hydraframework.core.mvc.patterns.facade {
 		public function removeCommand(notificationName:String, command:Class):void {
 			var commandClass:String = getQualifiedClassName(command);
 
-			if (commandMap[notificationName])
-				commandMap[notificationName][commandClass] = null;
+			if (commandMap[notificationName]) {
+				delete commandMap[notificationName][commandClass];
+			}
 			
 			trace("Removing command:", notificationName, "->", commandClass);
 		}
@@ -337,7 +338,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 			if (!relay)
 				return;
 			this.sendNotification(new Notification(Mediator.REMOVE, relay));
-			mediatorMap[relay.getName()] = null;
+			delete mediatorMap[relay.getName()];
 			relay.setFacade(null);
 			removeRelayEvents(relay);
 		}
@@ -387,7 +388,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 				return;
 			this.sendNotification(new Notification(Proxy.REMOVE, relay));
 			relay.dispose();
-			proxyMap[relay.getName()] = null;
+			delete proxyMap[relay.getName()];
 			relay.setFacade(null);
 			removeRelayEvents(relay);
 		}
@@ -444,7 +445,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 				return;
 			this.sendNotification(new Notification(Plugin.REMOVE, relay));
 			relay.dispose();
-			pluginMap[relay.getName()] = null;
+			delete pluginMap[relay.getName()];
 			relay.setFacade(null);
 			removeRelayEvents(relay);
 		}
@@ -492,8 +493,26 @@ package com.hydraframework.core.mvc.patterns.facade {
 		 */
 		public function removeDelegate(delegate:Class):void {
 			var delegateClass:String = getQualifiedClassName(delegate);
-			delegateMap[delegateClass] = null;
+			delete delegateMap[delegateClass];
 			trace("Removing delegate:", delegateClass);
+		}
+
+		/**
+		 * Removes all registered delegates for specified interface.
+		 *
+		 * @param	String
+		 * @param	Class
+		 * @return	void
+		 */
+		public function removeDelegatesByInterface(delegateInterface:Class):void {
+			var obj:Object;
+			for (var s:String in delegateMap) {
+				obj = new (delegateMap[s] as Class)();
+				if (obj is delegateInterface) {
+					delete delegateMap[s];
+					trace("Removing delegate by Interface:", getQualifiedClassName(delegateInterface));
+				}
+			}
 		}
 
 		/*

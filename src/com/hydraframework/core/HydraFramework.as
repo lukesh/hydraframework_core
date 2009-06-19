@@ -10,8 +10,8 @@ package com.hydraframework.core {
 		public function HydraFramework() {
 		}
 
-		public static function initialize(component:IUIComponent, facadeClass:Class):void {
-			new HydraCore(component, facadeClass);
+		public static function initialize(component:IUIComponent, facadeClass:Class):HydraCore {
+			return new HydraCore(component, facadeClass);
 		}
 	}
 }

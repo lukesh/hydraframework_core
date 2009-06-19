@@ -21,6 +21,7 @@ package com.hydraframework.core.mvc.interfaces {
 		function registerDelegate(delegate:Class):void;
 		function retrieveDelegate(delegateInterface:Class):Object;
 		function removeDelegate(delegate:Class):void;
+		function removeDelegatesByInterface(delegateInterface:Class):void;
 		function registerCore():void;
 		function removeCore():void;
 	}

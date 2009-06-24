@@ -14,14 +14,15 @@ package com.hydraframework.core.mvc.patterns.facade {
 	import com.hydraframework.core.mvc.patterns.plugin.Plugin;
 	import com.hydraframework.core.mvc.patterns.proxy.Proxy;
 	import com.hydraframework.core.mvc.patterns.relay.Relay;
-	
+	import com.hydraframework.core.registries.DelegateRegistry;
+
 	import flash.events.EventPhase;
 	import flash.utils.getQualifiedClassName;
-	
+
 	import mx.core.IUIComponent;
 	import mx.events.FlexEvent;
-	
-	import nl.demonsters.debugger.MonsterDebugger;
+
+	//import nl.demonsters.debugger.MonsterDebugger;
 
 	public class Facade extends Relay implements IFacade {
 		public static const REGISTER:String = "Facade.register";
@@ -30,12 +31,13 @@ package com.hydraframework.core.mvc.patterns.facade {
 		private var mediatorMap:Array;
 		private var proxyMap:Array;
 		private var pluginMap:Array;
-		private var delegateMap:Array;
-		private var debugger:MonsterDebugger;
+		private var delegateRegistry:DelegateRegistry;
+
+		//private var debugger:MonsterDebugger;
 
 		public function Facade(name:String = null, component:IUIComponent = null) {
 			super();
-			debugger = new MonsterDebugger(this);
+			//debugger = new MonsterDebugger(this);
 			this.setName(name);
 			this.setComponent(component);
 
@@ -69,7 +71,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 				var command:ICommand;
 
 				for (var s:String in commandList) {
-					command = ICommand(new (commandList[s] as Class)(this));
+					command = ICommand(new(commandList[s] as Class)(this));
 					command.execute(notification);
 				}
 			} else {
@@ -183,7 +185,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 			mediatorMap = [];
 			proxyMap = [];
 			pluginMap = [];
-			delegateMap = [];
+			delegateRegistry = new DelegateRegistry();
 			/*
 			   Register Relays with the Facade.
 			 */
@@ -211,9 +213,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 			super.dispose();
 			this.removeCore();
 
-			for (s in delegateMap) {
-				delete delegateMap[s];
-			}
+			delegateRegistry.removeAll();
 
 			for (s in pluginMap) {
 				removePlugin(s);
@@ -265,7 +265,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 		 */
 		public function retrieveCommand(notificationName:String, commandClass:String):ICommand {
 			var commandList:Array = retrieveCommandList(notificationName);
-			return commandList ? new (commandList[commandClass] as Class)() as ICommand : null;
+			return commandList ? new(commandList[commandClass] as Class)() as ICommand : null;
 		}
 
 		/**
@@ -291,7 +291,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 			if (commandMap[notificationName]) {
 				delete commandMap[notificationName][commandClass];
 			}
-			
+
 			trace("Removing command:", notificationName, "->", commandClass);
 		}
 
@@ -461,27 +461,36 @@ package com.hydraframework.core.mvc.patterns.facade {
 		 * @param	Class
 		 * @return	void
 		 */
-		public function registerDelegate(delegate:Class):void {
-			var delegateClass:String = getQualifiedClassName(delegate);
-			delegateMap[delegateClass] = delegate;
-			trace("Registering delegate:", delegateClass);
+		public function registerDelegate(delegate:Class, registerGlobal:Boolean = false):void {
+			if (registerGlobal) {
+				DelegateRegistry.getInstance().registerDelegate(delegate);
+			} else {
+				delegateRegistry.registerDelegate(delegate);
+			}
 		}
 
 		/**
 		 * Retrieves the delegate that implements delegateInterface.
 		 *
 		 * @param	Class
-		 * @return	ICommand
+		 * @return	Object
 		 */
-		public function retrieveDelegate(delegateInterface:Class):Object {
-			var obj:Object;
-			for (var s:String in delegateMap) {
-				obj = new (delegateMap[s] as Class)();
-				if (obj is delegateInterface) {
-					return obj;
+		public function retrieveDelegate(delegateInterface:Class, forceRetrieveLocal:Boolean = false):Object {
+			var delegate:Object;
+			/*
+			   This code could be simplified attempting to retrieve the globally registered delegate first,
+			   and if that were null OR forceRetrieveLocal == true, attempt to return the local one. However,
+			   this would always require two lookups in requests where forceRetrieveLocal == true.
+			 */
+			if (forceRetrieveLocal) {
+				delegate = delegateRegistry.retrieveDelegate(delegateInterface);
+			} else {
+				delegate = DelegateRegistry.getInstance().retrieveDelegate(delegateInterface);
+				if (!delegate) {
+					delegate = delegateRegistry.retrieveDelegate(delegateInterface);
 				}
 			}
-			return null;
+			return delegate;
 		}
 
 		/**
@@ -491,10 +500,12 @@ package com.hydraframework.core.mvc.patterns.facade {
 		 * @param	Class
 		 * @return	void
 		 */
-		public function removeDelegate(delegate:Class):void {
-			var delegateClass:String = getQualifiedClassName(delegate);
-			delete delegateMap[delegateClass];
-			trace("Removing delegate:", delegateClass);
+		public function removeDelegate(delegate:Class, removeGlobal:Boolean = false):void {
+			if (removeGlobal) {
+				DelegateRegistry.getInstance().removeDelegate(delegate);
+			} else {
+				delegateRegistry.removeDelegate(delegate);
+			}
 		}
 
 		/**
@@ -504,14 +515,11 @@ package com.hydraframework.core.mvc.patterns.facade {
 		 * @param	Class
 		 * @return	void
 		 */
-		public function removeDelegatesByInterface(delegateInterface:Class):void {
-			var obj:Object;
-			for (var s:String in delegateMap) {
-				obj = new (delegateMap[s] as Class)();
-				if (obj is delegateInterface) {
-					delete delegateMap[s];
-					trace("Removing delegate by Interface:", getQualifiedClassName(delegateInterface));
-				}
+		public function removeDelegatesByInterface(delegateInterface:Class, removeGlobal:Boolean = false):void {
+			if (removeGlobal) {
+				DelegateRegistry.getInstance().removeDelegatesByInterface(delegateInterface);
+			} else {
+				delegateRegistry.removeDelegatesByInterface(delegateInterface);
 			}
 		}
 

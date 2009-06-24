@@ -6,12 +6,18 @@ Release Date: 06/19/2009
 
     Platform: ActionScript 3 (Flex)
      Version: 0
-    Revision: 3
-       Minor: 2  
+    Revision: 4
+       Minor: 0  
       Author: Francis Lukesh <fran@lukesh.com, flukesh@andculture.com>
      License: Creative Commons Attribution 3.0 United States License
 
 -------------------------------------------------------------------------------
+
+0.4.0	Added support for a global DelegateRegistry. This does will not affect
+		current implementations of the API, however adds the ability to
+		register and retrieve delegates on a global level. If a Delegate is
+		requested, and does not exist in the local delegate map, the Facade
+		will attempt to return a globally-registered Delegate.
 
 0.3.2	Added removeDelegatesByInterface() to the Facade.
 		HydraFramework.initialize() returns the created instance of HydraCore.

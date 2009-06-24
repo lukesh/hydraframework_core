@@ -18,10 +18,10 @@ package com.hydraframework.core.mvc.interfaces {
 		function registerPlugin(plugin:IPlugin):void;
 		function retrievePlugin(pluginName:String):IPlugin;
 		function removePlugin(pluginName:String):void;
-		function registerDelegate(delegate:Class):void;
-		function retrieveDelegate(delegateInterface:Class):Object;
-		function removeDelegate(delegate:Class):void;
-		function removeDelegatesByInterface(delegateInterface:Class):void;
+		function registerDelegate(delegate:Class, registerGlobal:Boolean=false):void;
+		function retrieveDelegate(delegateInterface:Class, forceRetrieveLocal:Boolean=false):Object;
+		function removeDelegate(delegate:Class, removeGlobal:Boolean=false):void;
+		function removeDelegatesByInterface(delegateInterface:Class, removeGlobal:Boolean=false):void;
 		function registerCore():void;
 		function removeCore():void;
 	}

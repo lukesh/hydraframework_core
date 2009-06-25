@@ -14,7 +14,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 	import com.hydraframework.core.mvc.patterns.plugin.Plugin;
 	import com.hydraframework.core.mvc.patterns.proxy.Proxy;
 	import com.hydraframework.core.mvc.patterns.relay.Relay;
-	import com.hydraframework.core.registries.DelegateRegistry;
+	import com.hydraframework.core.registries.delegate.DelegateRegistry;
 
 	import flash.events.EventPhase;
 	import flash.utils.getQualifiedClassName;

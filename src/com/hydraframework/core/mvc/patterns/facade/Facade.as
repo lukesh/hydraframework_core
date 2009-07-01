@@ -307,12 +307,16 @@ package com.hydraframework.core.mvc.patterns.facade {
 		 * @return	void
 		 */
 		public function registerMediator(mediator:IMediator):void {
-			mediatorMap[mediator.getName()] = mediator;
-			mediator.setFacade(this);
-
-			if (this.initialized) {
-				registerRelayEvents(mediator as IRelay);
-				this.sendNotification(new Notification(Mediator.REGISTER, mediator as IRelay));
+			if (mediatorMap[mediator.getName()]) {
+				trace("*** WARNING *** Mediator '" + mediator.getName() + "' already registered with Facade '" + this.getName() + "'; aborting registration.");
+			} else {
+				mediatorMap[mediator.getName()] = mediator;
+				mediator.setFacade(this);
+	
+				if (this.initialized) {
+					registerRelayEvents(mediator as IRelay);
+					this.sendNotification(new Notification(Mediator.REGISTER, mediator as IRelay));
+				}
 			}
 		}
 
@@ -355,13 +359,17 @@ package com.hydraframework.core.mvc.patterns.facade {
 		 * @return	void
 		 */
 		public function registerProxy(proxy:IProxy):void {
-			proxyMap[proxy.getName()] = proxy;
-			proxy.setFacade(this);
-
-			if (this.initialized) {
-				registerRelayEvents(proxy as IRelay);
-				proxy.initialize();
-				this.sendNotification(new Notification(Proxy.REGISTER, proxy as IRelay));
+			if (proxyMap[proxy.getName()]) {
+				trace("*** WARNING *** Proxy '" + proxy.getName() + "' already registered with Facade '" + this.getName() + "'; aborting registration.");
+			} else {
+				proxyMap[proxy.getName()] = proxy;
+				proxy.setFacade(this);
+	
+				if (this.initialized) {
+					registerRelayEvents(proxy as IRelay);
+					proxy.initialize();
+					this.sendNotification(new Notification(Proxy.REGISTER, proxy as IRelay));
+				}
 			}
 		}
 

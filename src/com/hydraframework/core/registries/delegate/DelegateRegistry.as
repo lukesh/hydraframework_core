@@ -12,6 +12,10 @@ package com.hydraframework.core.registries.delegate {
 		public static function getInstance():DelegateRegistry {
 			return _instance;
 		}
+		
+		public static function get instance():DelegateRegistry {
+			return _instance;
+		}
 
 		private var delegateMap:Array;
 

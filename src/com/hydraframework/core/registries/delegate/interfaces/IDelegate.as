@@ -7,6 +7,11 @@
 
 	public interface IDelegate {
 		function set responder(value:IResponder):void;
+		/**
+		 * The delegate maintains a responder property of type IResponder.
+		 * When the delegate gets a response from the server, it is responsible
+		 * transforming the data and applying it to the responder.
+		 */
 		function get responder():IResponder;
 	}
 }

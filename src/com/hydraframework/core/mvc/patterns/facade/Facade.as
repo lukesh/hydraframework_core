@@ -15,10 +15,11 @@ package com.hydraframework.core.mvc.patterns.facade {
 	import com.hydraframework.core.mvc.patterns.proxy.Proxy;
 	import com.hydraframework.core.mvc.patterns.relay.Relay;
 	import com.hydraframework.core.registries.delegate.DelegateRegistry;
-
+	
+	import flash.events.Event;
 	import flash.events.EventPhase;
 	import flash.utils.getQualifiedClassName;
-
+	
 	import mx.core.IUIComponent;
 	import mx.events.FlexEvent;
 
@@ -66,7 +67,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 			   If the event's target is the Facade, and it has reached its target,
 			   execute the command.
 			 */
-			if (notification.target == this && notification.eventPhase == EventPhase.AT_TARGET) {
+			if (Event(notification).target == this && Event(notification).eventPhase == EventPhase.AT_TARGET) {
 				var commandList:Array = this.retrieveCommandList(notification.name);
 				var command:ICommand;
 
@@ -88,9 +89,9 @@ package com.hydraframework.core.mvc.patterns.facade {
 				   component to dispatch the event--this will allow it to bubble
 				   to parent DisplayObjects.
 				 */
-				if (this.component && notification.target != this.component && notification.eventPhase == 2 && notification.bubbles) {
-					notification.stopImmediatePropagation();
-					this.component.dispatchEvent(notification);
+				if (this.component && Event(notification).target != this.component && Event(notification).eventPhase == 2 && Event(notification).bubbles) {
+					Event(notification).stopImmediatePropagation();
+					this.component.dispatchEvent(Event(notification));
 				}
 			}
 		}

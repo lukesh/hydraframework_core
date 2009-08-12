@@ -7,15 +7,12 @@ Release Date: 08/12/2009
     Platform: ActionScript 3 (Flex)
      Version: 1
     Revision: 0
-       Minor: 1  
+       Minor: 0  
       Author: Francis Lukesh <fran@lukesh.com, flukesh@andculture.com>
      License: Creative Commons Attribution 3.0 United States License
 
 -------------------------------------------------------------------------------
 
-1.0.1	Added an INotification interface to promote decoupled integration with
-		Notifications.
-		
 1.0.0	Promoted version 0.5.0 to a feature-complete official version 1.0.
 
 0.5.0	Added basic IDelegate to the registries.delegate.interfaces.	

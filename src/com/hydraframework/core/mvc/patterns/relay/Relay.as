@@ -122,7 +122,7 @@ package com.hydraframework.core.mvc.patterns.relay {
 		 * Sends the Notification type event.
 		 */
 		public function sendNotification(notification:Notification):void {
-			this.dispatchEvent(notification);
+			this.dispatchEvent(Event(notification));
 		}
 
 		/**

@@ -3,6 +3,8 @@
    Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package com.hydraframework.core.mvc.events {
+	import com.hydraframework.core.mvc.interfaces.INotification;
+	
 	import flash.events.Event;
 
 	/**
@@ -10,7 +12,7 @@ package com.hydraframework.core.mvc.events {
 	 * "Notification" and is used to facilitate MVC communication between
 	 * the actors.
 	 */
-	public class Notification extends Event {
+	public class Notification extends Event implements INotification {
 		/**
 		 * All Notification events are of type Notification.TYPE
 		 * ("Notification")

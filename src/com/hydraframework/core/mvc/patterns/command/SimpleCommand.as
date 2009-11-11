@@ -26,5 +26,20 @@ package com.hydraframework.core.mvc.patterns.command {
 		 */
 		public function execute(notification:Notification):void {
 		}
+		
+		/**
+		 * Since the Command is instantiated as needed, it must forward the
+		 * note to the listening Facade.
+		 * 
+		 * @param	Notification
+		 * @return	void
+		 */
+		override public function sendNotification(notification:Notification) : void
+		{
+			if (this.facade)
+			{
+				this.facade.sendNotification(notification);
+			}
+		}
 	}
 }

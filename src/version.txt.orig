@@ -1,0 +1,118 @@
+HydraFramework - Copyright(c) 2009 andCulture, Inc. Some rights reserved.
+
+-------------------------------------------------------------------------------
+
+Release Date: 11/11/2009
+
+    Platform: ActionScript 3 (Flex)
+     Version: 1
+    Revision: 3
+       Minor: 1
+      Author: Francis Lukesh <fran@lukesh.com, flukesh@andculture.com>
+     License: Creative Commons Attribution 3.0 United States License
+
+-------------------------------------------------------------------------------
+
+<<<<<<< HEAD:src/version.txt
+1.3.1	Overrode sendNotification() in SimpleCommand to pass the notification 
+		to its listening Facade. This makes for more readable code and reduces 
+		errors where the Command could send Notifications into the ether if the 
+		developer used this.sendNotification and not 
+		this.facade.sendNotification. It is now proper to use 
+		this.sendNotification everywhere, even in Commands.
+=======
+1.3.1	Overrode sendNotification() in SimpleCommand to pass the notification
+		to its listening Facade. This makes for more readable code and reduces
+		errors where the Command could send Notifications into the ether.
+>>>>>>> 85f6661340a0756a655a3c007c53dc5f0931d6ea:src/version.txt
+		
+1.3.0	Various bugfixes to authentication and configuration core libs, but
+		most significantly, implemented the as3commons ClassUtils for
+		retrieving classes in the DelegateRegistry.
+		
+1.0.0	Promoted version 0.5.0 to a feature-complete official version 1.0.
+
+0.5.0	Added basic IDelegate to the registries.delegate.interfaces.	
+
+0.4.1	Added validation for duplicate actor registration in the Facade.  
+
+0.4.0	Added support for a global DelegateRegistry. This does will not affect
+		current implementations of the API, however adds the ability to
+		register and retrieve delegates on a global level. If a Delegate is
+		requested, and does not exist in the local delegate map, the Facade
+		will attempt to return a globally-registered Delegate.
+
+0.3.2	Added removeDelegatesByInterface() to the Facade.
+		HydraFramework.initialize() returns the created instance of HydraCore.
+
+0.3.1	Ensured that Commands and Delegates were returning a new instance on
+		retrieveCommand and retrieveDelegate.
+		
+0.3.0	Restructured the HydraMVC implementation into the HydraFramework 
+		project. Added plugin architecture to the system. Added a delegate map
+		to the facade to facilitate an IoC implementation.
+		
+		Component must now implement IUIComponent. 
+		
+		Fixed a small event priority bug where request phased notifications
+		would be handled after response phased if there was no latency in
+		certain circumstances. 
+
+0.2.0	Refactored initialization sequence. Facades may or may not require
+		a view component, but it's recommended. If you don't bind a facade
+		to a view component, you need to manually call initialize() and
+		dispose().
+		
+		Mediators require a view component. They are to mediate between the MVC
+		and the view, ipso facto requiring a view component. It is possible to
+		rig the MVC if you want, but it isn't recommended.
+		
+		All events are FlexEvents now; this manages memory very well and has
+		produced very clean memory footprints when adding and removing many
+		components in tests.
+		
+		When a Facade is disposed, it calls dispose on all actors. When a
+		Facade's view component is removed from the stage, it calls dispose()
+		automatically. When it is added to the stage, it calls initialize()
+		automatically. A Mediator is only truly removed from memory when its 
+		Facade is removed. Proxies initialize() and dispose() with their
+		Facades. If you're using a singleton proxy, be cognizant of this and
+		know that initialize() will be called when any Facade to which it is
+		registered initializes; the same applies to dispose().
+		
+		Added more documentation to core classes.
+		
+		Begun testing integration with De MonsterDebugger
+		(http://demonsterdebugger.com/). This is our first step towards an
+		external AIR debug console integration. We will need to experiment
+		with memory management and performance implications first, however...
+
+		
+0.1.3	Upgraded priority of the FlexEvents that control initialization in
+		Facade and Mediator. This allows them to register their event listeners
+		in implementation before the view component fires any events.
+
+
+0.1.2	Updated interfaces to include remove[Actor] methods and fix incorrect
+		signatures. The Proxy now automatically fires initialize() and 
+		dispose() methods. 
+		
+		Fixed a bug where everything would be disposed if the container needed 
+		to spawn scrollbars. When you add components to a canvas, for example, 
+		if the contents become too large for the canvas, the canvas creates
+		scrollbars. The problem is that this process actually removes and re-
+		adds the component to the stage, firing a REMOVED_FROM_STAGE event,
+		triggering all the dispose() methods. We worked around this by trapping
+		the REMOVED event, ensuring that the target was the component of the
+		actor, and only disposing in that case. So far, this seems to work very
+		well.
+		
+		
+0.1.1	Added new generic REGISTER and REMOVE notifications for Facade, 
+		Mediator, and Proxy. (Previously, you had to determine which actor
+		sent the Relay.REGISTER or Relay.REMOVE notification.)
+
+
+0.1.0	Initial release, code as-is for evaluation, contribution, 
+		collaboration. 
+

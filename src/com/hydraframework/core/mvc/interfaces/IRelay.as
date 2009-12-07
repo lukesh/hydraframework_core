@@ -10,6 +10,7 @@ package com.hydraframework.core.mvc.interfaces {
 	import mx.core.IUIComponent;
 
 	public interface IRelay extends IEventDispatcher {
+		function getVersion():String;
 		function setName(name:String):void;
 		function getName():String;
 		function setComponent(component:IUIComponent):void;

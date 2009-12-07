@@ -3,12 +3,15 @@
    Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package com.hydraframework.core.mvc.patterns.proxy {
+	import com.hydraframework.core.hydraframework_internal;
 	import com.hydraframework.core.mvc.events.Notification;
 	import com.hydraframework.core.mvc.interfaces.IProxy;
 	import com.hydraframework.core.mvc.patterns.facade.Facade;
 	import com.hydraframework.core.mvc.patterns.relay.Relay;
-
 	//import nl.demonsters.debugger.MonsterDebugger;
+	
+	use namespace hydraframework_internal;
+	
 	public class Proxy extends Relay implements IProxy {
 		public static const REGISTER:String = "Proxy.register";
 		public static const REMOVE:String = "Proxy.remove";
@@ -29,33 +32,26 @@ package com.hydraframework.core.mvc.patterns.proxy {
 		 * @param	Notification
 		 * @return	void
 		 */
-		override public function handleNotification(notification:Notification):void {
-			super.handleNotification(notification);
+		override hydraframework_internal function __handleNotification(notification:Notification):void {
+			super.__handleNotification(notification);
 
 			switch (notification.name) {
 				case Facade.REGISTER:
-					initialize();
+					this.hydraframework_internal::__initialize();
 					break;
 				case Facade.REMOVE:
-					dispose();
+					this.hydraframework_internal::__dispose();
 					break;
 			}
 		}
-
-		override public function initialize():void {
-			if (initialized)
-				return;
-			//MonsterDebugger.trace(this, "Proxy.initialize()");
-			//trace("Proxy.initialize()", this);
-			super.initialize();
+		
+		override hydraframework_internal function __initialize(notificationName:String=null) : void {
+			super.__initialize(notificationName || Proxy.REGISTER);
 		}
-
-		override public function dispose():void {
-			if (!initialized)
-				return;
-			//MonsterDebugger.trace(this, "Proxy.dispose()");
-			//trace("Proxy.dispose()", this);
-			super.dispose();
+		
+		
+		override hydraframework_internal function __dispose(notificationName:String=null) : void {
+			super.__dispose(notificationName || Proxy.REMOVE);
 		}
 	}
 }

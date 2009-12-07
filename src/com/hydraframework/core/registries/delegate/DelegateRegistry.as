@@ -4,8 +4,9 @@
  */
 package com.hydraframework.core.registries.delegate
 {
+	import com.hydraframework.core.HydraFramework;
 	import com.hydraframework.core.utils.ClassUtils;
-
+	
 	import flash.utils.getQualifiedClassName;
 
 	public class DelegateRegistry
@@ -41,7 +42,7 @@ package com.hydraframework.core.registries.delegate
 		{
 			var delegateClass:String = getQualifiedClassName(delegate);
 			delegateMap[delegateClass] = delegate;
-			trace("Registering delegate:", delegateClass);
+			HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> Registering delegate:", delegateClass);
 		}
 
 		/**
@@ -73,7 +74,7 @@ package com.hydraframework.core.registries.delegate
 		{
 			var delegateClass:String = getQualifiedClassName(delegate);
 			delete delegateMap[delegateClass];
-			trace("Removing delegate:", delegateClass);
+			HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> Removing delegate:", delegateClass);
 		}
 
 		/**
@@ -90,7 +91,7 @@ package com.hydraframework.core.registries.delegate
 				if (ClassUtils.isImplementationOf(delegateMap[s], delegateInterface))
 				{
 					delete delegateMap[s];
-					trace("Removing delegate by Interface:", getQualifiedClassName(delegateInterface));
+					HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> Removing delegate by Interface:", getQualifiedClassName(delegateInterface));
 				}
 			}
 		}

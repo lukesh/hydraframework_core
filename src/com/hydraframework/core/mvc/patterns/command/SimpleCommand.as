@@ -3,11 +3,15 @@
    Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package com.hydraframework.core.mvc.patterns.command {
+	import com.hydraframework.core.hydraframework_internal;
 	import com.hydraframework.core.mvc.events.Notification;
+	import com.hydraframework.core.mvc.events.Phase;
 	import com.hydraframework.core.mvc.interfaces.ICommand;
 	import com.hydraframework.core.mvc.interfaces.IFacade;
 	import com.hydraframework.core.mvc.patterns.relay.Relay;
-
+	
+	use namespace hydraframework_internal;
+	
 	/**
 	 * Basic command. This is the most commonly-used command type.
 	 *
@@ -18,6 +22,28 @@ package com.hydraframework.core.mvc.patterns.command {
 			super(facade);
 		}
 
+		public var notification:Notification;
+		
+		/**
+		 * @private
+		 */
+		hydraframework_internal function __execute(notification:Notification):void {
+			this.notification = notification; 	
+			execute(notification);
+		}
+		
+		public function respond(body:Object):void {
+			sendNotification(new Notification(notification.name, body, Phase.RESPONSE));
+		}
+		
+		public function cancel(body:Object):void {
+			sendNotification(new Notification(notification.name, body, Phase.CANCEL));
+		}
+		
+		public function complete(body:Object):void {
+			sendNotification(new Notification(notification.name, body, Phase.COMPLETE));
+		}
+		
 		/**
 		 * Override this method to define what action this command performs.
 		 *

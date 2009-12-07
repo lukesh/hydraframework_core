@@ -12,19 +12,21 @@ package com.hydraframework.core {
 		public var component:IUIComponent;
 		public var facadeClass:Class;
 		public var facade:IFacade;
+		
+		public static const VERSION : String = "1.4.0";
 
 		public function HydraCore(component:IUIComponent, facadeClass:Class) {
 			this.component = component;
 			this.facadeClass = facadeClass;
 			this.component.addEventListener(FlexEvent.INITIALIZE, handleInitialize);
-			this.component.addEventListener(FlexEvent.CREATION_COMPLETE, handleCreationComplete);
+//			this.component.addEventListener(FlexEvent.CREATION_COMPLETE, handleCreationComplete);
 		}
 
 		private function handleInitialize(event:FlexEvent):void {
 			this.facade = new facadeClass(component);
 		}
 
-		private function handleCreationComplete(event:FlexEvent):void {
-		}
+//		private function handleCreationComplete(event:FlexEvent):void {
+//		}
 	}
 }

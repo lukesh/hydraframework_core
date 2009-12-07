@@ -3,6 +3,8 @@
    Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package com.hydraframework.core.mvc.patterns.relay {
+	import com.hydraframework.core.HydraFramework;
+	import com.hydraframework.core.hydraframework_internal;
 	import com.hydraframework.core.mvc.events.Notification;
 	import com.hydraframework.core.mvc.interfaces.IFacade;
 	import com.hydraframework.core.mvc.interfaces.IRelay;
@@ -12,13 +14,21 @@ package com.hydraframework.core.mvc.patterns.relay {
 	
 	import mx.core.IUIComponent;
 
+	use namespace hydraframework_internal;
+	
 	/**
 	 * Relay is the base class for MVC actors. Facade, Proxy and Mediator all
 	 * sublcass Relay.
 	 */
 	public class Relay extends EventDispatcher implements IRelay {
+		public static const VERSION:String = "1.4.0";
 		public static const REGISTER:String = "Relay.register";
 		public static const REMOVE:String = "Relay.remove";
+		
+		public function getVersion():String {
+			return VERSION;
+		}
+		
 		/**
 		 * Name of Relay. This is important when retrieving an instance of a
 		 * registered Relay.
@@ -91,17 +101,44 @@ package com.hydraframework.core.mvc.patterns.relay {
 		}
 
 		/**
+		 * @private
+		 */
+		hydraframework_internal function __initialize(notificationName:String=null):void {
+			if (_initialized)
+				return;
+			//trace("Relay.initialize():", this);
+			HydraFramework.log(HydraFramework.DEBUG_SHOW_INTERNALS, "----- <HydraFramework> Relay.hydraframework_internal::__initialize", this);
+			this.attachEventListeners();
+			_initialized = true;
+			initialize();
+			this.sendNotification(new Notification(notificationName || Relay.REGISTER, this));
+		}
+		
+		/**
 		 * The initialize() method registers the Relay's event listeners, which
 		 * binds it to the MVC. In addition, initialize() can be overridden to
 		 * introduce more startup functionality.
 		 */
 		public function initialize():void {
-			if (_initialized)
+			// If this is overridden, and Hydra can't call its own
+			// __initialize, the best we can do is try to call it. If they
+			// don't call super.initialize(), then they must perform those
+			// steps manually.
+			this.hydraframework_internal::__initialize();
+		}
+		
+		/**
+		 * @private
+		 */
+		hydraframework_internal function __dispose(notificationName:String=null):void {
+			if (!_initialized)
 				return;
-			//trace("Relay.initialize():", this);	
-			this.attachEventListeners();
-			_initialized = true;
-			this.sendNotification(new Notification(Relay.REGISTER, this));
+			HydraFramework.log(HydraFramework.DEBUG_SHOW_INTERNALS, "----- <HydraFramework> Relay.hydraframework_internal::__dispose", this);
+			//trace("Relay.dispose():", this);
+			dispose();
+			this.sendNotification(new Notification(notificationName || Relay.REMOVE, this));
+			this.removeEventListeners();
+			_initialized = false;
 		}
 
 		/**
@@ -110,12 +147,11 @@ package com.hydraframework.core.mvc.patterns.relay {
 		 * overridden to introduce more shutdown functionality.
 		 */
 		public function dispose():void {
-			if (!_initialized)
-				return;
-			//trace("Relay.dispose():", this);	
-			this.sendNotification(new Notification(Relay.REMOVE, this));
-			this.removeEventListeners();
-			_initialized = false;
+			// If this is overridden, and Hydra can't call its own
+			// __dispose, the best we can do is try to call it. If they
+			// don't call super.dispose(), then they must perform those
+			// steps manually.
+			this.hydraframework_internal::__dispose();
 		}
 
 		/**
@@ -125,6 +161,14 @@ package com.hydraframework.core.mvc.patterns.relay {
 			this.dispatchEvent(Event(notification));
 		}
 
+		/**
+		 * @private
+		 */
+		hydraframework_internal function __handleNotification(notification:Notification):void {
+			HydraFramework.log(HydraFramework.DEBUG_SHOW_INTERNALS, "----- <HydraFramework> Relay.hydraframework_internal::__handleNotification:", this, notification.name);
+			handleNotification(notification);
+		}
+		
 		/**
 		 * This core method handles Notification events, and needs to be
 		 * overridden in subclasses do do anything.
@@ -139,7 +183,7 @@ package com.hydraframework.core.mvc.patterns.relay {
 		protected function handleRegister(event:Event):void {
 			if (_initialized)
 				return;
-			this.initialize();
+			this.hydraframework_internal::__initialize();
 		}
 
 		/**
@@ -148,7 +192,7 @@ package com.hydraframework.core.mvc.patterns.relay {
 		 */
 		protected function handleRemove(event:Event):void {
 			if (event.target == this.component) {
-				this.dispose();
+				this.hydraframework_internal::__dispose();
 				event.stopPropagation();
 			}
 		}

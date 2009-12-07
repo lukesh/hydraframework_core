@@ -3,6 +3,8 @@
    Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package com.hydraframework.core.mvc.patterns.facade {
+	import com.hydraframework.core.HydraFramework;
+	import com.hydraframework.core.hydraframework_internal;
 	import com.hydraframework.core.mvc.events.Notification;
 	import com.hydraframework.core.mvc.interfaces.ICommand;
 	import com.hydraframework.core.mvc.interfaces.IFacade;
@@ -10,6 +12,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 	import com.hydraframework.core.mvc.interfaces.IPlugin;
 	import com.hydraframework.core.mvc.interfaces.IProxy;
 	import com.hydraframework.core.mvc.interfaces.IRelay;
+	import com.hydraframework.core.mvc.patterns.command.SimpleCommand;
 	import com.hydraframework.core.mvc.patterns.mediator.Mediator;
 	import com.hydraframework.core.mvc.patterns.plugin.Plugin;
 	import com.hydraframework.core.mvc.patterns.proxy.Proxy;
@@ -25,6 +28,8 @@ package com.hydraframework.core.mvc.patterns.facade {
 
 	//import nl.demonsters.debugger.MonsterDebugger;
 
+	use namespace hydraframework_internal;
+	
 	public class Facade extends Relay implements IFacade {
 		public static const REGISTER:String = "Facade.register";
 		public static const REMOVE:String = "Facade.remove";
@@ -59,10 +64,10 @@ package com.hydraframework.core.mvc.patterns.facade {
 		 * @param	Notification
 		 * @return	void
 		 */
-		override public function handleNotification(notification:Notification):void {
-			super.handleNotification(notification);
-
-			// trace(this, notification.target, this==notification.target, notification.eventPhase, " -- ", notification.name);
+		override hydraframework_internal function __handleNotification(notification:Notification):void {
+			super.__handleNotification(notification);
+			
+			HydraFramework.log(HydraFramework.DEBUG_SHOW_INTERNALS, "----- <HydraFramework> Facade.hydraframwork_internal::__handleNotification", this, notification.target, "at target:", this==notification.target, notification.eventPhase, " -- ", notification.name);
 			/*
 			   If the event's target is the Facade, and it has reached its target,
 			   execute the command.
@@ -73,7 +78,11 @@ package com.hydraframework.core.mvc.patterns.facade {
 
 				for (var s:String in commandList) {
 					command = ICommand(new(commandList[s] as Class)(this));
-					command.execute(notification);
+					if (command is SimpleCommand) {
+						SimpleCommand(command).hydraframework_internal::__execute(notification);	
+					} else {
+						command.execute(notification);
+					}
 				}
 			} else {
 				/*
@@ -104,16 +113,28 @@ package com.hydraframework.core.mvc.patterns.facade {
 		 * logic.
 		 */
 		private function registerRelayEvents(relay:IRelay, priority:int = 0):void {
-			this.addEventListener(Notification.TYPE, relay.handleNotification, false, priority, true);
-			relay.addEventListener(Notification.TYPE, handleNotification, false, priority, true);
+			HydraFramework.log(HydraFramework.DEBUG_SHOW_INTERNALS, "----- <HydraFramework> Relay.registerRelayEvents", this, "is version:", Relay(relay).getVersion());
+			if (relay is Relay) {
+				this.addEventListener(Notification.TYPE, Relay(relay).hydraframework_internal::__handleNotification, false, priority, true);
+				relay.addEventListener(Notification.TYPE, this.hydraframework_internal::__handleNotification, false, priority, true);
+			} else {
+				this.addEventListener(Notification.TYPE, relay.handleNotification, false, priority, true);
+				relay.addEventListener(Notification.TYPE, handleNotification, false, priority, true);
+			}
 		}
 
 		/**
 		 * @private
 		 */
 		private function removeRelayEvents(relay:IRelay):void {
-			this.removeEventListener(Notification.TYPE, relay.handleNotification, false);
-			relay.removeEventListener(Notification.TYPE, handleNotification, false);
+			HydraFramework.log(HydraFramework.DEBUG_SHOW_INTERNALS, "----- <HydraFramework> Relay.removeRelayEvents", this, "is version:", Relay(relay).getVersion());
+			if (relay is Relay) {
+				this.removeEventListener(Notification.TYPE, Relay(relay).hydraframework_internal::__handleNotification, false);
+				relay.removeEventListener(Notification.TYPE, this.hydraframework_internal::__handleNotification, false);
+			} else {
+				this.removeEventListener(Notification.TYPE, relay.handleNotification, false);
+				relay.removeEventListener(Notification.TYPE, handleNotification, false);
+			}
 		}
 
 		/**
@@ -121,7 +142,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 		 */
 		override protected function attachEventListeners():void {
 			super.attachEventListeners();
-			this.addEventListener(Notification.TYPE, handleNotification, false, 0, true);
+			this.addEventListener(Notification.TYPE, this.hydraframework_internal::__handleNotification, false, 0, true);
 			var s:String;
 
 			for (s in mediatorMap) {
@@ -140,7 +161,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 				/*
 				   Use capture to form an "event diode" of sorts.
 				 */
-				component.addEventListener(Notification.TYPE, handleNotification, true, 0, true);
+				component.addEventListener(Notification.TYPE, this.hydraframework_internal::__handleNotification, true, 0, true);
 				/*
 				   If the Facade is bound to a component, automatically
 				   initialize() and dispose() as the component is added and
@@ -156,7 +177,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 		 */
 		override protected function removeEventListeners():void {
 			super.removeEventListeners();
-			this.removeEventListener(Notification.TYPE, handleNotification, false);
+			this.removeEventListener(Notification.TYPE, this.hydraframework_internal::__handleNotification, false);
 			var s:String;
 
 			for (s in mediatorMap) {
@@ -172,14 +193,17 @@ package com.hydraframework.core.mvc.patterns.facade {
 			}
 
 			if (component) {
-				component.removeEventListener(Notification.TYPE, handleNotification, true);
+				component.removeEventListener(Notification.TYPE, this.hydraframework_internal::__handleNotification, true);
 				component.removeEventListener(FlexEvent.REMOVE, handleRemove, false);
 			}
 		}
 
-		override public function initialize():void {
+		override hydraframework_internal function __initialize(notificationName:String=null):void {
 			if (initialized)
 				return;
+			
+			HydraFramework.log(HydraFramework.DEBUG_SHOW_INTERNALS, "----- <HydraFramework> Facade.hydraframework_internal::__initialize", this, "INITIALIZED:", initialized);
+			
 			//MonsterDebugger.trace(this, "Facade.initialize()");
 			//trace("Facade.initialize()", this);
 			commandMap = [];
@@ -190,18 +214,18 @@ package com.hydraframework.core.mvc.patterns.facade {
 			/*
 			   Register Relays with the Facade.
 			 */
-			this.registerCore();
+			this.hydraframework_internal::__registerCore();
 			/*
 			   Bind Relay events to each actor.
 			 */
-			super.initialize();
+			super.__initialize();
 			/*
 			   Relays should listen for this Notification and initialize()
 			 */
-			this.sendNotification(new Notification(Facade.REGISTER, this));
+			this.sendNotification(new Notification(notificationName || Facade.REGISTER, this));
 		}
 
-		override public function dispose():void {
+		override hydraframework_internal function __dispose(notificationName:String=null):void {
 			if (!initialized)
 				return;
 			//MonsterDebugger.trace(this, "Facade.dispose()");
@@ -209,10 +233,10 @@ package com.hydraframework.core.mvc.patterns.facade {
 			/*
 			   Relays should listen for this Notification and dispose()
 			 */
-			this.sendNotification(new Notification(Facade.REMOVE, this));
+			this.sendNotification(new Notification(notificationName || Facade.REMOVE, this));
 			var s:String;
-			super.dispose();
-			this.removeCore();
+			super.__dispose();
+			this.hydraframework_internal::__removeCore();
 
 			delegateRegistry.removeAll();
 
@@ -253,7 +277,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 			if (!commandMap[notificationName])
 				commandMap[notificationName] = [];
 			commandMap[notificationName][commandClass] = command;
-			trace("Registering command:", notificationName, "->", commandClass);
+			HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> Registering command:", notificationName, "->", commandClass);
 		}
 
 		/**
@@ -293,7 +317,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 				delete commandMap[notificationName][commandClass];
 			}
 
-			trace("Removing command:", notificationName, "->", commandClass);
+			HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> Removing command:", notificationName, "->", commandClass);
 		}
 
 		/*
@@ -309,7 +333,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 		 */
 		public function registerMediator(mediator:IMediator):void {
 			if (mediatorMap[mediator.getName()]) {
-				trace("*** WARNING *** Mediator '" + mediator.getName() + "' already registered with Facade '" + this.getName() + "'; aborting registration.");
+				HydraFramework.log(HydraFramework.DEBUG_SHOW_WARNINGS, "*** WARNING *** Mediator '" + mediator.getName() + "' already registered with Facade '" + this.getName() + "'; aborting registration.");
 			} else {
 				mediatorMap[mediator.getName()] = mediator;
 				mediator.setFacade(this);
@@ -361,14 +385,18 @@ package com.hydraframework.core.mvc.patterns.facade {
 		 */
 		public function registerProxy(proxy:IProxy):void {
 			if (proxyMap[proxy.getName()]) {
-				trace("*** WARNING *** Proxy '" + proxy.getName() + "' already registered with Facade '" + this.getName() + "'; aborting registration.");
+				HydraFramework.log(HydraFramework.DEBUG_SHOW_WARNINGS, "*** WARNING *** Proxy '" + proxy.getName() + "' already registered with Facade '" + this.getName() + "'; aborting registration.");
 			} else {
 				proxyMap[proxy.getName()] = proxy;
 				proxy.setFacade(this);
 	
 				if (this.initialized) {
 					registerRelayEvents(proxy as IRelay);
-					proxy.initialize();
+					if (proxy is Relay) {
+						Relay(proxy).hydraframework_internal::__initialize();	
+					} else {
+						proxy.initialize();
+					}
 					this.sendNotification(new Notification(Proxy.REGISTER, proxy as IRelay));
 				}
 			}
@@ -396,7 +424,11 @@ package com.hydraframework.core.mvc.patterns.facade {
 			if (!relay)
 				return;
 			this.sendNotification(new Notification(Proxy.REMOVE, relay));
-			relay.dispose();
+			if (relay is Relay) {
+				Relay(relay).hydraframework_internal::__dispose();
+			} else {
+				relay.dispose();	
+			}
 			delete proxyMap[relay.getName()];
 			relay.setFacade(null);
 			removeRelayEvents(relay);
@@ -424,7 +456,11 @@ package com.hydraframework.core.mvc.patterns.facade {
 			if (this.initialized) {
 				registerRelayEvents(plugin as IRelay);
 				plugin.preinitialize();
-				plugin.initialize();
+				if (plugin is Relay) {
+					Relay(plugin).hydraframework_internal::__initialize();
+				} else {
+					plugin.initialize();
+				}
 				this.sendNotification(new Notification(Plugin.REGISTER, plugin as IRelay));
 			} else {
 				plugin.preinitialize();
@@ -453,7 +489,11 @@ package com.hydraframework.core.mvc.patterns.facade {
 			if (!relay)
 				return;
 			this.sendNotification(new Notification(Plugin.REMOVE, relay));
-			relay.dispose();
+			if (relay is Relay) {
+				Relay(relay).hydraframework_internal::__dispose();
+			} else {
+				relay.dispose();
+			}
 			delete pluginMap[relay.getName()];
 			relay.setFacade(null);
 			removeRelayEvents(relay);
@@ -537,6 +577,15 @@ package com.hydraframework.core.mvc.patterns.facade {
 		   CORE
 		   -----------------------------------------------------------------------
 		 */ //
+		
+		/**
+		 * @private
+		 */
+		
+		hydraframework_internal function __registerCore():void {
+			registerCore();
+		}
+		
 		/**
 		 * Override this method to register individual MVC actors with the
 		 * Facade. This is where you will call your register[Relay]() methods.
@@ -545,6 +594,10 @@ package com.hydraframework.core.mvc.patterns.facade {
 		public function registerCore():void {
 		}
 
+		hydraframework_internal function __removeCore():void {
+			removeCore();
+		}
+		
 		/**
 		 * Override this method to execute specific functionality when the
 		 * core is remove from the system. Events should be removed

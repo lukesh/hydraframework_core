@@ -3,14 +3,17 @@
    Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package com.hydraframework.core.mvc.patterns.mediator {
+	import com.hydraframework.core.hydraframework_internal;
 	import com.hydraframework.core.mvc.events.Notification;
 	import com.hydraframework.core.mvc.interfaces.IMediator;
 	import com.hydraframework.core.mvc.patterns.facade.Facade;
 	import com.hydraframework.core.mvc.patterns.relay.Relay;
 	
 	import mx.core.IUIComponent;
-
 	//import nl.demonsters.debugger.MonsterDebugger;
+
+	use namespace hydraframework_internal;
+	
 	public class Mediator extends Relay implements IMediator {
 		public static const REGISTER:String = "Mediator.register";
 		public static const REMOVE:String = "Mediator.remove";
@@ -21,7 +24,7 @@ package com.hydraframework.core.mvc.patterns.mediator {
 			this.setComponent(component);
 
 			if (component) {
-				initialize();
+				this.hydraframework_internal::__initialize();
 			}
 		}
 
@@ -33,30 +36,23 @@ package com.hydraframework.core.mvc.patterns.mediator {
 		 * @param	Notification
 		 * @return	void
 		 */
-		override public function handleNotification(notification:Notification):void {
-			super.handleNotification(notification);
+		override hydraframework_internal function __handleNotification(notification:Notification):void {
+			super.__handleNotification(notification);
 
 			switch (notification.name) {
 				case Facade.REMOVE:
-					dispose();
+					this.hydraframework_internal::__dispose();
 					break;
 			}
 		}
-
-		override public function initialize():void {
-			if (initialized)
-				return;
-			//MonsterDebugger.trace(this, "Mediator.initialize()");
-			//trace("Mediator.initialize()", this);
-			super.initialize();
+		
+		override hydraframework_internal function __initialize(notificationName:String=null) : void {
+			super.__initialize(notificationName || Mediator.REGISTER);
 		}
+		
 
-		override public function dispose():void {
-			if (!initialized)
-				return;
-			//MonsterDebugger.trace(this, "Mediator.dispose()");
-			//trace("Mediator.dispose()", this);
-			super.dispose();
+		override hydraframework_internal function __dispose(notificationName:String=null) : void {
+			super.__dispose(notificationName || Mediator.REMOVE);
 		}
 	}
 }

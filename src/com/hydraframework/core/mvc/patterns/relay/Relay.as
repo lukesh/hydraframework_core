@@ -21,7 +21,9 @@ package com.hydraframework.core.mvc.patterns.relay {
 	 * sublcass Relay.
 	 */
 	public class Relay extends EventDispatcher implements IRelay {
-		public static const VERSION:String = "1.4.0";
+		
+		public static const VERSION:String = "1.4.1";
+		
 		public static const REGISTER:String = "Relay.register";
 		public static const REMOVE:String = "Relay.remove";
 		
@@ -103,7 +105,13 @@ package com.hydraframework.core.mvc.patterns.relay {
 		/**
 		 * @private
 		 */
+		hydraframework_internal var __isInitializing : Boolean = false;		
+		
+		/**
+		 * @private
+		 */
 		hydraframework_internal function __initialize(notificationName:String=null):void {
+			this.hydraframework_internal::__isInitializing = true;
 			if (_initialized)
 				return;
 			//trace("Relay.initialize():", this);
@@ -124,13 +132,21 @@ package com.hydraframework.core.mvc.patterns.relay {
 			// __initialize, the best we can do is try to call it. If they
 			// don't call super.initialize(), then they must perform those
 			// steps manually.
-			this.hydraframework_internal::__initialize();
+			if (!this.hydraframework_internal::__isInitializing) {
+				this.hydraframework_internal::__initialize();
+			}
 		}
+		
+		/**
+		 * private
+		 */
+		hydraframework_internal var __isDisposing : Boolean = false;
 		
 		/**
 		 * @private
 		 */
 		hydraframework_internal function __dispose(notificationName:String=null):void {
+			this.hydraframework_internal::__isDisposing = true;
 			if (!_initialized)
 				return;
 			HydraFramework.log(HydraFramework.DEBUG_SHOW_INTERNALS, "----- <HydraFramework> Relay.hydraframework_internal::__dispose", this);
@@ -151,7 +167,9 @@ package com.hydraframework.core.mvc.patterns.relay {
 			// __dispose, the best we can do is try to call it. If they
 			// don't call super.dispose(), then they must perform those
 			// steps manually.
-			this.hydraframework_internal::__dispose();
+			if (!this.hydraframework_internal::__isDisposing) {
+				this.hydraframework_internal::__dispose();
+			}
 		}
 
 		/**

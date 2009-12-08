@@ -114,7 +114,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 		 */
 		private function registerRelayEvents(relay:IRelay, priority:int = 0):void {
 			HydraFramework.log(HydraFramework.DEBUG_SHOW_INTERNALS, "----- <HydraFramework> Relay.registerRelayEvents", this, "is version:", Relay(relay).getVersion());
-			if (relay is Relay) {
+			if (relay.getVersion() == HydraFramework.VERSION) {
 				this.addEventListener(Notification.TYPE, Relay(relay).hydraframework_internal::__handleNotification, false, priority, true);
 				relay.addEventListener(Notification.TYPE, this.hydraframework_internal::__handleNotification, false, priority, true);
 			} else {
@@ -128,7 +128,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 		 */
 		private function removeRelayEvents(relay:IRelay):void {
 			HydraFramework.log(HydraFramework.DEBUG_SHOW_INTERNALS, "----- <HydraFramework> Relay.removeRelayEvents", this, "is version:", Relay(relay).getVersion());
-			if (relay is Relay) {
+			if (relay.getVersion() == HydraFramework.VERSION) {
 				this.removeEventListener(Notification.TYPE, Relay(relay).hydraframework_internal::__handleNotification, false);
 				relay.removeEventListener(Notification.TYPE, this.hydraframework_internal::__handleNotification, false);
 			} else {
@@ -392,7 +392,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 	
 				if (this.initialized) {
 					registerRelayEvents(proxy as IRelay);
-					if (proxy is Relay) {
+					if (proxy.getVersion() == HydraFramework.VERSION) {
 						Relay(proxy).hydraframework_internal::__initialize();	
 					} else {
 						proxy.initialize();
@@ -424,7 +424,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 			if (!relay)
 				return;
 			this.sendNotification(new Notification(Proxy.REMOVE, relay));
-			if (relay is Relay) {
+			if (relay.getVersion() == HydraFramework.VERSION) {
 				Relay(relay).hydraframework_internal::__dispose();
 			} else {
 				relay.dispose();	
@@ -456,7 +456,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 			if (this.initialized) {
 				registerRelayEvents(plugin as IRelay);
 				plugin.preinitialize();
-				if (plugin is Relay) {
+				if (plugin.getVersion() == HydraFramework.VERSION) {
 					Relay(plugin).hydraframework_internal::__initialize();
 				} else {
 					plugin.initialize();
@@ -489,7 +489,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 			if (!relay)
 				return;
 			this.sendNotification(new Notification(Plugin.REMOVE, relay));
-			if (relay is Relay) {
+			if (relay.getVersion() == HydraFramework.VERSION) {
 				Relay(relay).hydraframework_internal::__dispose();
 			} else {
 				relay.dispose();

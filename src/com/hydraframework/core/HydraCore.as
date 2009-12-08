@@ -13,8 +13,6 @@ package com.hydraframework.core {
 		public var facadeClass:Class;
 		public var facade:IFacade;
 		
-		public static const VERSION : String = "1.4.0";
-
 		public function HydraCore(component:IUIComponent, facadeClass:Class) {
 			this.component = component;
 			this.facadeClass = facadeClass;

@@ -1,6 +1,6 @@
 /*
    HydraFramework - Copyright (c) 2009 andCulture, Inc. Some rights reserved.
-   Your reuse is governed by the Creative Commons Attribution 3.0 United States License
+   Your reuse is governed by the MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 package com.hydraframework.core.mvc.events {
 

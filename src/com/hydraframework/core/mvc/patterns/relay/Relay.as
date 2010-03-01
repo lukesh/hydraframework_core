@@ -22,7 +22,7 @@ package com.hydraframework.core.mvc.patterns.relay {
 	 */
 	public class Relay extends EventDispatcher implements IRelay {
 		
-		public static const VERSION:String = "1.4.1";
+		public static const VERSION:String = "1.5.0";
 		
 		public static const REGISTER:String = "Relay.register";
 		public static const REMOVE:String = "Relay.remove";

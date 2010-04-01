@@ -1,5 +1,5 @@
 /*
-   HydraFramework - Copyright (c) 2009 andCulture, Inc. Some rights reserved.
+   HydraFramework - Copyright (c) 2010 andCulture, Inc. Some rights reserved.
    Your reuse is governed by the MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 package com.hydraframework.core.mvc.patterns.relay {
@@ -11,9 +11,8 @@ package com.hydraframework.core.mvc.patterns.relay {
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 	
-	import mx.core.IUIComponent;
-
 	use namespace hydraframework_internal;
 	
 	/**
@@ -22,7 +21,7 @@ package com.hydraframework.core.mvc.patterns.relay {
 	 */
 	public class Relay extends EventDispatcher implements IRelay {
 		
-		public static const VERSION:String = "1.5.0";
+		public static const VERSION:String = "2.0.0";
 		
 		public static const REGISTER:String = "Relay.register";
 		public static const REMOVE:String = "Relay.remove";
@@ -45,15 +44,15 @@ package com.hydraframework.core.mvc.patterns.relay {
 			return this.name;
 		}
 		/**
-		 * Facades and Mediators can be bound to IUIComponents.
+		 * Facades and Mediators can be bound to IEventDispatchers.
 		 */
-		public var component:IUIComponent;
+		public var component:IEventDispatcher;
 
-		public function setComponent(component:IUIComponent):void {
+		public function setComponent(component:IEventDispatcher):void {
 			this.component = component;
 		}
 
-		public function getComponent():IUIComponent {
+		public function getComponent():IEventDispatcher {
 			return this.component;
 		}
 		/**

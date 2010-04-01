@@ -2,17 +2,20 @@ HydraFramework - Copyright(c) 2010 andCulture, Inc. Some rights reserved.
 
 -------------------------------------------------------------------------------
 
-Release Date: 03/01/2010
+Release Date: 04/01/2010
 
-    Platform: ActionScript 3 (Flex)
-     Version: 1
-    Revision: 5
+    Platform: ActionScript 3 (Flash / Flex)
+     Version: 2
+    Revision: 0
        Minor: 0
       Author: Francis Lukesh <fran@lukesh.com, flukesh@andculture.com>
      License: MIT License (http://www.opensource.org/licenses/mit-license.php)
 
 -------------------------------------------------------------------------------
 
+2.0.0	Completely removed Flex dependency for Hydra. Events that trigger
+		actor instantiation are now configurable via a HydraEventMap.
+		
 1.5.0	Compiled against Flex 4 SDK, including PageNavigation plugin in libs.
 
 1.4.0	There are no breaking API changes, however internals not employ the use

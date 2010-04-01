@@ -1,5 +1,5 @@
 /*
-   HydraFramework - Copyright (c) 2009 andCulture, Inc. Some rights reserved.
+   HydraFramework - Copyright (c) 2010 andCulture, Inc. Some rights reserved.
    Your reuse is governed by the MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 package com.hydraframework.core.mvc.events {
@@ -16,20 +16,20 @@ package com.hydraframework.core.mvc.events {
 		 * All Notification events are of type Notification.TYPE
 		 * ("Notification")
 		 */
-		public static const TYPE:String="Notification";
+		public static const TYPE : String = "Notification";
 		/*
 		   These constants are the same as what is found in the Phase class.
 		   The only reason they are here so to allow the phase property to be set
 		   to a default in the constructor. Phase should be used to access the
 		   values of these constants.
 		 */
-		private static const REQUEST:String="Phase.request";
-		private static const RESPONSE:String="Phase.response";
-		private static const COMPLETE:String="Phase.complete";
-		private static const CANCEL:String="Phase.cancel";
-		
-		private var _name:String;
-		
+		private static const REQUEST : String = "Phase.request";
+		private static const RESPONSE : String = "Phase.response";
+		private static const COMPLETE : String = "Phase.complete";
+		private static const CANCEL : String = "Phase.cancel";
+
+		private var _name : String;
+
 		/**
 		 * Name of the Notification event. This is the core of the notification
 		 * system. Names should be assigned via constants stored in Facades,
@@ -46,13 +46,13 @@ package com.hydraframework.core.mvc.events {
 		 * the constants in the Phase class.
 		 */
 
-		public function set name(value:String):void {
+		public function set name(value : String) : void {
 			if (value != _name) {
-				_name=value;
+				_name = value;
 			}
 		}
 
-		public function get name():String {
+		public function get name() : String {
 			return _name;
 		}
 
@@ -62,12 +62,12 @@ package com.hydraframework.core.mvc.events {
 		 *
 		 * @return String
 		 */
-		public function getName():String {
+		public function getName() : String {
 			return name;
 		}
-		
-		private var _body:Object;
-		
+
+		private var _body : Object;
+
 		/**
 		 * Body is the "payload" of the notification, and is weakly typed.
 		 * This is both a weakness and a strength of the HydraFramework framework.
@@ -75,13 +75,13 @@ package com.hydraframework.core.mvc.events {
 		 * your notification before you use it.
 		 */
 
-		public function set body(value:Object):void {
+		public function set body(value : Object) : void {
 			if (value != _body) {
-				_body=value;
+				_body = value;
 			}
 		}
 
-		public function get body():Object {
+		public function get body() : Object {
 			return _body;
 		}
 
@@ -91,12 +91,12 @@ package com.hydraframework.core.mvc.events {
 		 *
 		 * @return Object
 		 */
-		public function getBody():Object {
+		public function getBody() : Object {
 			return body;
 		}
-		
-		private var _phase:String;
-		
+
+		private var _phase : String;
+
 		/**
 		 * Phase indicates the point in the process defined by the
 		 * Notification's body. That process will run through several phases,
@@ -125,13 +125,13 @@ package com.hydraframework.core.mvc.events {
 		 * of how we used it in Flex.
 		 */
 
-		public function set phase(value:String):void {
+		public function set phase(value : String) : void {
 			if (value != _phase) {
-				_phase=value;
+				_phase = value;
 			}
 		}
 
-		public function get phase():String {
+		public function get phase() : String {
 			return _phase;
 		}
 
@@ -142,35 +142,35 @@ package com.hydraframework.core.mvc.events {
 		 *
 		 * @return String
 		 */
-		public function getPhase():String {
+		public function getPhase() : String {
 			return phase;
 		}
-		
-		public function isRequest():Boolean {
+
+		public function isRequest() : Boolean {
 			return phase == Phase.REQUEST;
 		}
 
-		public function isResponse():Boolean {
+		public function isResponse() : Boolean {
 			return phase == Phase.RESPONSE;
 		}
 
-		public function isComplete():Boolean {
+		public function isComplete() : Boolean {
 			return phase == Phase.COMPLETE;
 		}
 
-		public function isCancel():Boolean {
+		public function isCancel() : Boolean {
 			return phase == Phase.CANCEL;
 		}
 
-		public function Notification(name:String, body:Object=null, phase:String=REQUEST, bubbles:Boolean=false, cancelable:Boolean=false) {
+		public function Notification(name : String, body : Object = null, phase : String = REQUEST, bubbles : Boolean = false, cancelable : Boolean = false) {
 			super(TYPE, bubbles, cancelable);
-			this.name=name;
-			this.body=body;
-			this.phase=phase;
+			this.name = name;
+			this.body = body;
+			this.phase = phase;
 		}
 
-		override public function clone():Event {
-			var clone:Notification=new Notification(this.name, this.body, this.phase, this.bubbles, this.cancelable);
+		override public function clone() : Event {
+			var clone : Notification = new Notification(this.name, this.body, this.phase, this.bubbles, this.cancelable);
 			return clone;
 		}
 	}

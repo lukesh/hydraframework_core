@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hydraframework.core.utils
-{
+package com.hydraframework.core.utils {
 
 	/**
 	 * Thrown when an application tries to retrieve a class by its name and
@@ -22,14 +21,12 @@ package com.hydraframework.core.utils
 	 *
 	 * @author Christophe Herreman
 	 */
-	public class ClassNotFoundError extends Error
-	{
+	public class ClassNotFoundError extends Error {
 
 		/**
 		 * Creates a new <code>ClassNotFoundError</code> object.
 		 */
-		public function ClassNotFoundError(message:String = "")
-		{
+		public function ClassNotFoundError(message : String = "") {
 			super(message);
 		}
 	}

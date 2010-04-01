@@ -20,6 +20,7 @@
     <classEntry path="com.hydraframework.core.registries.delegate.DelegateRegistry"/>
     <classEntry path="com.hydraframework.core.registries.delegate.interfaces.IDelegate"/>
     <classEntry path="com.hydraframework.core.utils.ClassUtils"/>
+    <classEntry path="com.hydraframework.core.HydraEventMap"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

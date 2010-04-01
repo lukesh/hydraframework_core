@@ -15,8 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hydraframework.core.utils
-{
+package com.hydraframework.core.utils {
 
 	import flash.events.TimerEvent;
 	import flash.system.ApplicationDomain;
@@ -32,10 +31,9 @@ package com.hydraframework.core.utils
 	 * @author Christophe Herreman
 	 * @author Erik Westra
 	 */
-	public class ClassUtils
-	{
+	public class ClassUtils {
 
-		private static const PACKAGE_CLASS_SEPARATOR:String = "::";
+		private static const PACKAGE_CLASS_SEPARATOR : String = "::";
 
 		/**
 		 * Returns a <code>Class</code> object that corresponds with the given
@@ -49,9 +47,8 @@ package com.hydraframework.core.utils
 		 *
 		 * @see org.springextensions.actionscript.errors.ClassNotFoundError
 		 */
-		public static function forInstance(instance:*, applicationDomain:ApplicationDomain = null):Class
-		{
-			var className:String = getQualifiedClassName(instance);
+		public static function forInstance(instance : *, applicationDomain : ApplicationDomain = null) : Class {
+			var className : String = getQualifiedClassName(instance);
 			return forName(className, applicationDomain);
 		}
 
@@ -67,33 +64,24 @@ package com.hydraframework.core.utils
 		 *
 		 * @see org.springextensions.actionscript.errors.ClassNotFoundError
 		 */
-		public static function forName(name:String, applicationDomain:ApplicationDomain = null):Class
-		{
-			var result:Class;
+		public static function forName(name : String, applicationDomain : ApplicationDomain = null) : Class {
+			var result : Class;
 
-			if (!applicationDomain)
-			{
+			if (!applicationDomain) {
 				applicationDomain = ApplicationDomain.currentDomain;
 			}
 
-			while (!applicationDomain.hasDefinition(name))
-			{
-				if (applicationDomain.parentDomain)
-				{
+			while (!applicationDomain.hasDefinition(name)) {
+				if (applicationDomain.parentDomain) {
 					applicationDomain = applicationDomain.parentDomain;
-				}
-				else
-				{
+				} else {
 					break;
 				}
 			}
 
-			try
-			{
+			try {
 				result = applicationDomain.getDefinition(name) as Class;
-			}
-			catch (e:ReferenceError)
-			{
+			} catch (e : ReferenceError) {
 				throw new ClassNotFoundError("A class with the name '" + name + "' could not be found.");
 			}
 			return result;
@@ -106,8 +94,7 @@ package com.hydraframework.core.utils
 		 *
 		 * @return the name of the class
 		 */
-		public static function getName(clazz:Class):String
-		{
+		public static function getName(clazz : Class) : String {
 			return getNameFromFullyQualifiedName(getFullyQualifiedName(clazz));
 		}
 
@@ -119,17 +106,13 @@ package com.hydraframework.core.utils
 		 *
 		 * @return the name of the class or interface
 		 */
-		public static function getNameFromFullyQualifiedName(fullyQualifiedName:String):String
-		{
-			var result:String = "";
-			var startIndex:int = fullyQualifiedName.indexOf(PACKAGE_CLASS_SEPARATOR);
+		public static function getNameFromFullyQualifiedName(fullyQualifiedName : String) : String {
+			var result : String = "";
+			var startIndex : int = fullyQualifiedName.indexOf(PACKAGE_CLASS_SEPARATOR);
 
-			if (startIndex == -1)
-			{
+			if (startIndex == -1) {
 				result = fullyQualifiedName;
-			}
-			else
-			{
+			} else {
 				result = fullyQualifiedName.substring(startIndex + PACKAGE_CLASS_SEPARATOR.length, fullyQualifiedName.length);
 			}
 			return result;
@@ -144,12 +127,10 @@ package com.hydraframework.core.utils
 		 *
 		 * @return the fully qualified name of the class
 		 */
-		public static function getFullyQualifiedName(clazz:Class, replaceColons:Boolean = false):String
-		{
-			var result:String = getQualifiedClassName(clazz);
+		public static function getFullyQualifiedName(clazz : Class, replaceColons : Boolean = false) : String {
+			var result : String = getQualifiedClassName(clazz);
 
-			if (replaceColons)
-			{
+			if (replaceColons) {
 				result = convertFullyQualifiedName(result);
 			}
 			return result;
@@ -161,8 +142,7 @@ package com.hydraframework.core.utils
 		 *
 		 * @return the boolean value indicating whether objects of the type clazz2 can be assigned to objects of clazz1
 		 */
-		public static function isAssignableFrom(clazz1:Class, clazz2:Class):Boolean
-		{
+		public static function isAssignableFrom(clazz1 : Class, clazz2 : Class) : Boolean {
 			return (clazz1 == clazz2) || isSubclassOf(clazz2, clazz1) || isImplementationOf(clazz2, clazz1);
 		}
 
@@ -171,10 +151,9 @@ package com.hydraframework.core.utils
 		 * passed in parent Class. To check if an interface extends another interface, use the isImplementationOf()
 		 * method instead.
 		 */
-		public static function isSubclassOf(clazz:Class, parentClass:Class):Boolean
-		{
-			var classDescription:XML = getFromObject(clazz);
-			var parentName:String = getQualifiedClassName(parentClass);
+		public static function isSubclassOf(clazz : Class, parentClass : Class) : Boolean {
+			var classDescription : XML = getFromObject(clazz);
+			var parentName : String = getQualifiedClassName(parentClass);
 			return (classDescription.factory.extendsClass.(@type == parentName).length() != 0);
 		}
 
@@ -186,14 +165,12 @@ package com.hydraframework.core.utils
 		 *
 		 * @returns the super class or null if no parent class was found
 		 */
-		public static function getSuperClass(clazz:Class):Class
-		{
-			var result:Class;
-			var classDescription:XML = getFromObject(clazz);
-			var superClasses:XMLList = classDescription.factory.extendsClass;
+		public static function getSuperClass(clazz : Class) : Class {
+			var result : Class;
+			var classDescription : XML = getFromObject(clazz);
+			var superClasses : XMLList = classDescription.factory.extendsClass;
 
-			if (superClasses.length() > 0)
-			{
+			if (superClasses.length() > 0) {
 				result = ClassUtils.forName(superClasses[0].@type);
 			}
 			return result;
@@ -206,10 +183,9 @@ package com.hydraframework.core.utils
 		 *
 		 * @return the name of the class' superclass
 		 */
-		public static function getSuperClassName(clazz:Class):String
-		{
-			var fullyQualifiedName:String = getFullyQualifiedSuperClassName(clazz);
-			var index:int = fullyQualifiedName.indexOf(PACKAGE_CLASS_SEPARATOR) + PACKAGE_CLASS_SEPARATOR.length;
+		public static function getSuperClassName(clazz : Class) : String {
+			var fullyQualifiedName : String = getFullyQualifiedSuperClassName(clazz);
+			var index : int = fullyQualifiedName.indexOf(PACKAGE_CLASS_SEPARATOR) + PACKAGE_CLASS_SEPARATOR.length;
 			return fullyQualifiedName.substring(index, fullyQualifiedName.length);
 		}
 
@@ -222,12 +198,10 @@ package com.hydraframework.core.utils
 		 *
 		 * @return the fully qualified name of the class' superclass
 		 */
-		public static function getFullyQualifiedSuperClassName(clazz:Class, replaceColons:Boolean = false):String
-		{
-			var result:String = getQualifiedSuperclassName(clazz);
+		public static function getFullyQualifiedSuperClassName(clazz : Class, replaceColons : Boolean = false) : String {
+			var result : String = getQualifiedSuperclassName(clazz);
 
-			if (replaceColons)
-			{
+			if (replaceColons) {
 				result = convertFullyQualifiedName(result);
 			}
 			return result;
@@ -242,17 +216,13 @@ package com.hydraframework.core.utils
 		 *
 		 * @return true if the clazz object implements the given interface; false if not
 		 */
-		public static function isImplementationOf(clazz:Class, interfaze:Class):Boolean
-		{
-			var result:Boolean;
+		public static function isImplementationOf(clazz : Class, interfaze : Class) : Boolean {
+			var result : Boolean;
 
-			if (clazz == null)
-			{
+			if (clazz == null) {
 				result = false;
-			}
-			else
-			{
-				var classDescription:XML = getFromObject(clazz);
+			} else {
+				var classDescription : XML = getFromObject(clazz);
 				result = (classDescription.factory.implementsInterface.(@type == getQualifiedClassName(interfaze)).length() != 0);
 			}
 			return result;
@@ -264,20 +234,17 @@ package com.hydraframework.core.utils
 		 * @param clazz the class to check
 		 * @return true if the clazz is an interface; false if not
 		 */
-		public static function isInterface(clazz:Class):Boolean
-		{
+		public static function isInterface(clazz : Class) : Boolean {
 			return (clazz === Object) ? false : (describeType(clazz).factory.extendsClass.length() == 0);
 		}
 
 		/**
 		 * Returns an array of all interface names that the given class implements.
 		 */
-		public static function getImplementedInterfaceNames(clazz:Class):Array
-		{
-			var result:Array = getFullyQualifiedImplementedInterfaceNames(clazz);
+		public static function getImplementedInterfaceNames(clazz : Class) : Array {
+			var result : Array = getFullyQualifiedImplementedInterfaceNames(clazz);
 
-			for (var i:int = 0; i < result.length; i++)
-			{
+			for (var i : int = 0; i < result.length; i++) {
 				result[i] = getNameFromFullyQualifiedName(result[i]);
 			}
 			return result;
@@ -287,22 +254,18 @@ package com.hydraframework.core.utils
 		 * Returns an array of all fully qualified interface names that the
 		 * given class implements.
 		 */
-		public static function getFullyQualifiedImplementedInterfaceNames(clazz:Class, replaceColons:Boolean = false):Array
-		{
-			var result:Array = [];
-			var classDescription:XML = getFromObject(clazz);
-			var interfacesDescription:XMLList = classDescription.factory.implementsInterface;
+		public static function getFullyQualifiedImplementedInterfaceNames(clazz : Class, replaceColons : Boolean = false) : Array {
+			var result : Array = [];
+			var classDescription : XML = getFromObject(clazz);
+			var interfacesDescription : XMLList = classDescription.factory.implementsInterface;
 
-			if (interfacesDescription)
-			{
-				var numInterfaces:int = interfacesDescription.length();
+			if (interfacesDescription) {
+				var numInterfaces : int = interfacesDescription.length();
 
-				for (var i:int = 0; i < numInterfaces; i++)
-				{
-					var fullyQualifiedInterfaceName:String = interfacesDescription[i].@type.toString();
+				for (var i : int = 0; i < numInterfaces; i++) {
+					var fullyQualifiedInterfaceName : String = interfacesDescription[i].@type.toString();
 
-					if (replaceColons)
-					{
+					if (replaceColons) {
 						fullyQualifiedInterfaceName = convertFullyQualifiedName(fullyQualifiedInterfaceName);
 					}
 					result.push(fullyQualifiedInterfaceName);
@@ -314,12 +277,10 @@ package com.hydraframework.core.utils
 		/**
 		 * Returns an array of all interface names that the given class implements.
 		 */
-		public static function getImplementedInterfaces(clazz:Class):Array
-		{
-			var result:Array = getFullyQualifiedImplementedInterfaceNames(clazz);
+		public static function getImplementedInterfaces(clazz : Class) : Array {
+			var result : Array = getFullyQualifiedImplementedInterfaceNames(clazz);
 
-			for (var i:int = 0; i < result.length; i++)
-			{
+			for (var i : int = 0; i < result.length; i++) {
 				result[i] = getDefinitionByName(result[i]);
 			}
 			return result;
@@ -335,13 +296,11 @@ package com.hydraframework.core.utils
 		 * @param clazz the class from which an instance will be created
 		 * @param args the arguments that need to be passed to the constructor
 		 */
-		public static function newInstance(clazz:Class, args:Array = null):*
-		{
-			var result:*;
-			var a:Array = (args == null) ? [] : args;
+		public static function newInstance(clazz : Class, args : Array = null) : * {
+			var result : *;
+			var a : Array = (args == null) ? [] : args;
 
-			switch (a.length)
-			{
+			switch (a.length) {
 				case 1:
 					result = new clazz(a[0]);
 					break;
@@ -382,8 +341,7 @@ package com.hydraframework.core.utils
 		/**
 		 * Converts the double colon (::) in a fully qualified class name to a dot (.)
 		 */
-		public static function convertFullyQualifiedName(className:String):String
-		{
+		public static function convertFullyQualifiedName(className : String) : String {
 			return className.replace(PACKAGE_CLASS_SEPARATOR, ".");
 		}
 
@@ -396,7 +354,7 @@ package com.hydraframework.core.utils
 		/**
 		 * The default value for the interval to clear the describe type cache.
 		 */
-		public static const CLEAR_CACHE_INTERVAL:uint = 60000;
+		public static const CLEAR_CACHE_INTERVAL : uint = 60000;
 
 		/**
 		 * The interval (in miliseconds) at which the cache will be cleared. Note that this value is only used
@@ -404,22 +362,20 @@ package com.hydraframework.core.utils
 		 *
 		 * @default 60000 (one minute)
 		 */
-		public static var clearCacheInterval:uint = CLEAR_CACHE_INTERVAL;
+		public static var clearCacheInterval : uint = CLEAR_CACHE_INTERVAL;
 
-		private static var _describeTypeCache:Object = {};
+		private static var _describeTypeCache : Object = {};
 
-		private static var _timer:Timer;
+		private static var _timer : Timer;
 
 		/**
 		 * Clears the describe type cache. This method is called automatically at regular intervals
 		 * defined by the clearCacheInterval property.
 		 */
-		public static function clearDescribeTypeCache():void
-		{
+		public static function clearDescribeTypeCache() : void {
 			_describeTypeCache = {};
 
-			if (_timer && _timer.running)
-			{
+			if (_timer && _timer.running) {
 				_timer.stop();
 			}
 		}
@@ -427,8 +383,7 @@ package com.hydraframework.core.utils
 		/**
 		 * Timer handler. Clear the cache.
 		 */
-		private static function timerHandler(e:TimerEvent):void
-		{
+		private static function timerHandler(e : TimerEvent) : void {
 			clearDescribeTypeCache();
 		}
 
@@ -446,19 +401,14 @@ package com.hydraframework.core.utils
 		 *
 		 * @return The class metadata of the given object.
 		 */
-		private static function getFromObject(object:Object):XML
-		{
-			var className:String = getQualifiedClassName(object);
-			var metadata:XML;
+		private static function getFromObject(object : Object) : XML {
+			var className : String = getQualifiedClassName(object);
+			var metadata : XML;
 
-			if (_describeTypeCache.hasOwnProperty(className))
-			{
+			if (_describeTypeCache.hasOwnProperty(className)) {
 				metadata = _describeTypeCache[className];
-			}
-			else
-			{
-				if (!_timer)
-				{
+			} else {
+				if (!_timer) {
 					// Only run the timer once to prevent unneeded overhead. This also prevents
 					// this class from falling for the bug described here:
 					// http://www.gskinner.com/blog/archives/2008/04/failure_to_unlo.html
@@ -466,8 +416,7 @@ package com.hydraframework.core.utils
 					_timer.addEventListener(TimerEvent.TIMER, timerHandler);
 				}
 
-				if (!(object is Class))
-				{
+				if (!(object is Class)) {
 					object = object.constructor;
 				}
 
@@ -476,8 +425,7 @@ package com.hydraframework.core.utils
 				_describeTypeCache[className] = metadata;
 
 				// Only run the timer if it is not already running.
-				if (!_timer.running)
-				{
+				if (!_timer.running) {
 					_timer.start();
 				}
 			}
@@ -492,9 +440,8 @@ package com.hydraframework.core.utils
 		 * @param className    The name of the class that you want to retrieve metadata from. The className
 		 *             may be in the following forms: package.Class or package::Class
 		 */
-		private static function getFromString(className:String):XML
-		{
-			var classDefinition:Class = getDefinitionByName(className) as Class;
+		private static function getFromString(className : String) : XML {
+			var classDefinition : Class = getDefinitionByName(className) as Class;
 
 			// Calling getFromObject seems double, as it results in the getObjectMethod getting
 			// the class name using getQualifiedClassName. It however saves us a check on the

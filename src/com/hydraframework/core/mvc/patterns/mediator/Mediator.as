@@ -1,5 +1,5 @@
 /*
-   HydraFramework - Copyright (c) 2009 andCulture, Inc. Some rights reserved.
+   HydraFramework - Copyright (c) 2010 andCulture, Inc. Some rights reserved.
    Your reuse is governed by the MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 package com.hydraframework.core.mvc.patterns.mediator {
@@ -9,7 +9,8 @@ package com.hydraframework.core.mvc.patterns.mediator {
 	import com.hydraframework.core.mvc.patterns.facade.Facade;
 	import com.hydraframework.core.mvc.patterns.relay.Relay;
 	
-	import mx.core.IUIComponent;
+	import flash.events.IEventDispatcher;
+	
 	//import nl.demonsters.debugger.MonsterDebugger;
 
 	use namespace hydraframework_internal;
@@ -18,10 +19,26 @@ package com.hydraframework.core.mvc.patterns.mediator {
 		public static const REGISTER:String = "Mediator.register";
 		public static const REMOVE:String = "Mediator.remove";
 
-		public function Mediator(name:String = null, component:IUIComponent = null) {
+		/*
+		   ...rest is a compatibility feature. Ultimately, we'd like this:
+		   component : IEventDispatcher = null
+		   however this would explode compatibility with previous versions,
+		   and AS3 does not support overloading.
+		 */
+		public function Mediator(...rest) {
 			super();
-			this.setName(name);
-			this.setComponent(component);
+			if (rest.length > 0) {
+				if (rest[0] is String) {
+					this.setName(String(rest[0]));
+				} else if (rest[0] is IEventDispatcher) {
+					this.setComponent(IEventDispatcher(rest[0]));
+				}
+			}
+			if (rest.length > 1) {
+				if (rest[1] is IEventDispatcher) {
+					this.setComponent(IEventDispatcher(rest[1]));
+				}
+			}
 
 			if (component) {
 				this.hydraframework_internal::__initialize();

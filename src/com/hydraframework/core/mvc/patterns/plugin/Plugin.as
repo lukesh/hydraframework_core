@@ -1,5 +1,5 @@
 /*
-   HydraFramework - Copyright (c) 2009 andCulture, Inc. Some rights reserved.
+   HydraFramework - Copyright (c) 2010 andCulture, Inc. Some rights reserved.
    Your reuse is governed by the MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 package com.hydraframework.core.mvc.patterns.plugin {
@@ -18,10 +18,21 @@ package com.hydraframework.core.mvc.patterns.plugin {
 
 		public var data:Object;
 		
-		public function Plugin(name:String = null, data:Object = null) {
+		/*
+		   ...rest is a compatibility feature. Plugin doesn't need args,
+		   however this would explode compatibility with previous versions,
+		   and AS3 does not support overloading.
+		 */
+		public function Plugin(...rest) {
 			super();
-			this.setName(name);
-			this.data = data;
+			if (rest.length > 0) {
+				if (rest[0] is String) {
+					this.setName(String(rest[0]));
+				}
+			}
+			if (rest.length > 1) {
+				this.data = rest[1];
+			}
 		}
 
 		/**

@@ -1,33 +1,28 @@
 /*
-   HydraFramework - Copyright (c) 2009 andCulture, Inc. Some rights reserved.
+   HydraFramework - Copyright (c) 2010 andCulture, Inc. Some rights reserved.
    Your reuse is governed by the MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-package com.hydraframework.core.registries.delegate
-{
+package com.hydraframework.core.registries.delegate {
 	import com.hydraframework.core.HydraFramework;
 	import com.hydraframework.core.utils.ClassUtils;
-	
+
 	import flash.utils.getQualifiedClassName;
 
-	public class DelegateRegistry
-	{
+	public class DelegateRegistry {
 
-		private static const _instance:DelegateRegistry = new DelegateRegistry();
+		private static const _instance : DelegateRegistry = new DelegateRegistry();
 
-		public static function getInstance():DelegateRegistry
-		{
+		public static function getInstance() : DelegateRegistry {
 			return _instance;
 		}
 
-		public static function get instance():DelegateRegistry
-		{
+		public static function get instance() : DelegateRegistry {
 			return _instance;
 		}
 
-		private var delegateMap:Array;
+		private var delegateMap : Array;
 
-		public function DelegateRegistry()
-		{
+		public function DelegateRegistry() {
 			super();
 			delegateMap = [];
 		}
@@ -36,11 +31,10 @@ package com.hydraframework.core.registries.delegate
 		 * Registers a delegate.
 		 *
 		 * @param	Class
-		 * @return	void 
+		 * @return	void
 		 */
-		public function registerDelegate(delegate:Class):void
-		{
-			var delegateClass:String = getQualifiedClassName(delegate);
+		public function registerDelegate(delegate : Class) : void {
+			var delegateClass : String = getQualifiedClassName(delegate);
 			delegateMap[delegateClass] = delegate;
 			HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> Registering delegate:", delegateClass);
 		}
@@ -51,12 +45,9 @@ package com.hydraframework.core.registries.delegate
 		 * @param	Class
 		 * @return	Object
 		 */
-		public function retrieveDelegate(delegateInterface:Class):Object
-		{
-			for (var s:String in delegateMap)
-			{
-				if (ClassUtils.isImplementationOf(delegateMap[s], delegateInterface))
-				{
+		public function retrieveDelegate(delegateInterface : Class) : Object {
+			for (var s : String in delegateMap) {
+				if (ClassUtils.isImplementationOf(delegateMap[s], delegateInterface)) {
 					return new(delegateMap[s] as Class)();
 				}
 			}
@@ -70,9 +61,8 @@ package com.hydraframework.core.registries.delegate
 		 * @param	Class
 		 * @return	void
 		 */
-		public function removeDelegate(delegate:Class):void
-		{
-			var delegateClass:String = getQualifiedClassName(delegate);
+		public function removeDelegate(delegate : Class) : void {
+			var delegateClass : String = getQualifiedClassName(delegate);
 			delete delegateMap[delegateClass];
 			HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> Removing delegate:", delegateClass);
 		}
@@ -84,12 +74,9 @@ package com.hydraframework.core.registries.delegate
 		 * @param	Class
 		 * @return	void
 		 */
-		public function removeDelegatesByInterface(delegateInterface:Class):void
-		{
-			for (var s:String in delegateMap)
-			{
-				if (ClassUtils.isImplementationOf(delegateMap[s], delegateInterface))
-				{
+		public function removeDelegatesByInterface(delegateInterface : Class) : void {
+			for (var s : String in delegateMap) {
+				if (ClassUtils.isImplementationOf(delegateMap[s], delegateInterface)) {
 					delete delegateMap[s];
 					HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> Removing delegate by Interface:", getQualifiedClassName(delegateInterface));
 				}
@@ -101,11 +88,9 @@ package com.hydraframework.core.registries.delegate
 		 *
 		 * @return	void
 		 */
-		public function removeAll():void
-		{
-			var s:String;
-			for (s in delegateMap)
-			{
+		public function removeAll() : void {
+			var s : String;
+			for (s in delegateMap) {
 				delete delegateMap[s];
 			}
 		}

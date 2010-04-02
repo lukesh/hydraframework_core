@@ -1,3 +1,7 @@
+/*
+   HydraFramework - Copyright (c) 2010 andCulture, Inc. Some rights reserved.
+   Your reuse is governed by the MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
 package com.hydraframework.core {
 	import flash.events.IEventDispatcher;
 
@@ -13,15 +17,15 @@ package com.hydraframework.core {
 		public var disposeCoreEvents : Array = [];
 
 		public function registerInitializeFacadeEvents(component : IEventDispatcher, handler : Function) : void {
-			registerEvents(initializeFacadeEvents, component, handler);
+			registerEvents(initializeFacadeEvents, component, handler, false);
 		}
 
 		public function removeInitializeFacadeEvents(component : IEventDispatcher, handler : Function) : void {
 			removeEvents(initializeFacadeEvents, component, handler);
 		}
 
-		public function registerInitializeCoreEvents(component : IEventDispatcher, handler : Function) : void {
-			registerEvents(initializeCoreEvents, component, handler, true, 20);
+		public function registerInitializeCoreEvents(component : IEventDispatcher, handler : Function, onlyRegisterFirst : Boolean = false) : void {
+			registerEvents((initializeCoreEvents && initializeCoreEvents.length > 0) ? [initializeCoreEvents[0]] : initializeCoreEvents, component, handler, true, 20);
 		}
 
 		public function removeInitializeCoreEvents(component : IEventDispatcher, handler : Function) : void {
@@ -42,12 +46,12 @@ package com.hydraframework.core {
 				});
 		}
 
-		public function removeEvents(events : Array, component : IEventDispatcher, handler : Function, useWeakReference : Boolean = true) : void {
+		public function removeEvents(events : Array, component : IEventDispatcher, handler : Function) : void {
 			events.forEach(function(e : *, i : int, a : Array) : void {
 					component.removeEventListener(String(e), handler);
 				});
 		}
-		
+
 		public function clone() : HydraEventMap {
 			return new HydraEventMap(initializeFacadeEvents, initializeCoreEvents, disposeCoreEvents);
 		}

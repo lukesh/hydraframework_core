@@ -75,7 +75,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 			   call initialize() when that component gets created.
 			 */
 			if (component) {
-				eventMap.registerInitializeCoreEvents(component, handleRegister);
+				eventMap.registerInitializeCoreEvents(component, handleRegister, true);
 			}
 		}
 
@@ -191,7 +191,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 				   initialize() and dispose() as the component is added and
 				   removed fromt the display list.
 				 */
-				eventMap.registerInitializeCoreEvents(component, handleRegister);
+				eventMap.registerInitializeCoreEvents(component, handleRegister, false);
 				eventMap.registerDisposeCoreEvents(component, handleRemove);
 			}
 		}

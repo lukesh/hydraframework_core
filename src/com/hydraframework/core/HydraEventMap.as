@@ -25,7 +25,7 @@ package com.hydraframework.core {
 		}
 
 		public function registerInitializeCoreEvents(component : IEventDispatcher, handler : Function, onlyRegisterFirst : Boolean = false) : void {
-			registerEvents((initializeCoreEvents && initializeCoreEvents.length > 0) ? [initializeCoreEvents[0]] : initializeCoreEvents, component, handler, true, 20);
+			registerEvents(onlyRegisterFirst ? ((initializeCoreEvents && initializeCoreEvents.length > 0) ? [initializeCoreEvents[0]] : initializeCoreEvents) : initializeCoreEvents, component, handler, true, 20);
 		}
 
 		public function removeInitializeCoreEvents(component : IEventDispatcher, handler : Function) : void {

@@ -19,7 +19,6 @@ package com.hydraframework.core.mvc.patterns.facade {
 	import com.hydraframework.core.mvc.patterns.proxy.Proxy;
 	import com.hydraframework.core.mvc.patterns.relay.Relay;
 	import com.hydraframework.core.registries.delegate.DelegateRegistry;
-	import com.hydraframework.core.utils.ClassUtils;
 	
 	import flash.events.Event;
 	import flash.events.EventPhase;
@@ -379,9 +378,9 @@ package com.hydraframework.core.mvc.patterns.facade {
 			if (mediatorNameOrClass is String) {
 				return mediatorMap[mediatorNameOrClass] as IMediator;
 			} else {
-				for each(var s : String in mediatorMap) {
-					if (mediatorMap[s] is mediatorNameOrClass || ClassUtils.isImplementationOf(mediatorMap[s], mediatorNameOrClass)) {
-						return mediatorMap[s] as IMediator;
+				for each (var o : IMediator in mediatorMap) {
+					if (o is mediatorNameOrClass) {
+						return o;
 					}
 				}
 			}
@@ -445,9 +444,9 @@ package com.hydraframework.core.mvc.patterns.facade {
 			if (proxyNameOrClass is String) {
 				return proxyMap[proxyNameOrClass] as IProxy;
 			} else {
-				for each(var s : String in proxyMap) {
-					if (proxyMap[s] is proxyNameOrClass || ClassUtils.isImplementationOf(proxyMap[s], proxyNameOrClass)) {
-						return proxyMap[s];
+				for each(var o : IProxy in proxyMap) {
+					if (o is proxyNameOrClass) {
+						return o;
 					}
 				}
 			}
@@ -519,9 +518,9 @@ package com.hydraframework.core.mvc.patterns.facade {
 			if (pluginNameOrClass is String) {
 				return pluginMap[pluginNameOrClass] as IPlugin;
 			} else {
-				for each(var s : String in pluginMap) {
-					if (pluginMap[s] is pluginNameOrClass || ClassUtils.isImplementationOf(pluginMap[s], pluginNameOrClass)) {
-						return pluginMap[s];
+				for each (var o : IPlugin in pluginMap) {
+					if (o is pluginNameOrClass) {
+						return o;
 					}
 				}
 			}

@@ -8,6 +8,9 @@ package com.hydraframework.core.mvc.patterns.plugin {
 	import com.hydraframework.core.mvc.interfaces.IPlugin;
 	import com.hydraframework.core.mvc.patterns.facade.Facade;
 	import com.hydraframework.core.mvc.patterns.relay.Relay;
+	
+	import flash.events.IEventDispatcher;
+
 	//import nl.demonsters.debugger.MonsterDebugger;
 	
 	use namespace hydraframework_internal;
@@ -28,6 +31,8 @@ package com.hydraframework.core.mvc.patterns.plugin {
 			if (rest.length > 0) {
 				if (rest[0] is String) {
 					this.setName(String(rest[0]));
+				} else if (rest[0] is IEventDispatcher) {
+					this.setComponent(IEventDispatcher(rest[0]));
 				}
 			}
 			if (rest.length > 1) {

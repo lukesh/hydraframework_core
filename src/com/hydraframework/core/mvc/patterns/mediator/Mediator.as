@@ -28,6 +28,9 @@ package com.hydraframework.core.mvc.patterns.mediator {
 		public function Mediator(...rest) {
 			super();
 			if (rest.length > 0) {
+				if (rest[0] is Array) {
+					rest = rest[0];
+				}
 				if (rest[0] is String) {
 					this.setName(String(rest[0]));
 				} else if (rest[0] is IEventDispatcher) {

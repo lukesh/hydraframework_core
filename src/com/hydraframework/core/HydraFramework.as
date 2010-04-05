@@ -8,7 +8,7 @@ package com.hydraframework.core {
 	
 	public class HydraFramework extends EventDispatcher {
 
-		public static const VERSION : String = "2.0.3";
+		public static const VERSION : String = "2.0";
 
 		public static const DEBUG_SHOW_WARNINGS : uint = 1;
 		public static const DEBUG_SHOW_INFO : uint = 2;

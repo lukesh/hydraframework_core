@@ -7,12 +7,16 @@ Release Date: 04/04/2010
     Platform: ActionScript 3 (Flash / Flex)
      Version: 2
     Revision: 0
-       Minor: 3
+       Minor: 4
       Author: Francis Lukesh <fran@lukesh.com, flukesh@andculture.com>
      License: MIT License (http://www.opensource.org/licenses/mit-license.php)
 
 -------------------------------------------------------------------------------
 
+2.0.4	If passing ...parameters to super() in subclasses of Facade, etc...,
+		super() will automatically acknowledge that ...paramaters was passed
+		and process the constructor correctly.
+		
 2.0.3	If an IEventDispatcher is passed to plugins and proxies, they will
 		automatically register it as the component.
 		

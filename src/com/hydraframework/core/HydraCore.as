@@ -33,16 +33,16 @@ package com.hydraframework.core {
 			}
 			this.facade = (function() : IFacade {
 					if (params.length == 0) {
-						HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> HydraCore initializing Facade with no arguments. Component will be null; Facade must be manually initialized(). Name will be null unless assigned as a const, use interface or classreference to retrieve. EventMap will be default.");
+						HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> HydraCore initializing Facade with no arguments. Component will be null; Facade must be manually initialized(). Name will be generated unless assigned as a const, use interface or classreference to retrieve. EventMap will be default.");
 						return IFacade(new facadeClass());
 					} else if (params.length == 1) {
 						if (params[0].@type != "String") {
-							HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> HydraCore initializing Facade with one argument. Component is assigned; Facade will attempt to automatically initialize based on eventMap. Name will be null unless assigned as a const, use interface or classreference to retrieve. EventMap will be default.");
+							HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> HydraCore initializing Facade with one argument. Component is assigned; Facade will attempt to automatically initialize based on eventMap. Name will be generated unless assigned as a const, use interface or classreference to retrieve. EventMap will be default.");
 							return IFacade(new facadeClass(component));
 						}
 					} else if (params.length == 2) {
 						if (params[0].@type != "String" && params[1].@type == "com.hydraframework.core::HydraEventMap") {
-							HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> HydraCore initializing Facade with two arguments. Component is assigned; Facade will attempt to automatically initialize based on eventMap. Name will be null unless assigned as a const, use interface or classreference to retrieve. EventMap has been assigned:", eventMap);
+							HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> HydraCore initializing Facade with two arguments. Component is assigned; Facade will attempt to automatically initialize based on eventMap. Name will be generated unless assigned as a const, use interface or classreference to retrieve. EventMap has been assigned:", eventMap);
 							return IFacade(new facadeClass(component, eventMap));
 						}
 					}

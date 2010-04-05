@@ -12,6 +12,7 @@ package com.hydraframework.core.mvc.patterns.relay {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+	import flash.utils.getQualifiedClassName;
 	
 	use namespace hydraframework_internal;
 	
@@ -21,7 +22,7 @@ package com.hydraframework.core.mvc.patterns.relay {
 	 */
 	public class Relay extends EventDispatcher implements IRelay {
 		
-		public static const VERSION:String = "2.0.0";
+		public static const VERSION:String = "2.0.2";
 		
 		public static const REGISTER:String = "Relay.register";
 		public static const REMOVE:String = "Relay.remove";
@@ -34,7 +35,22 @@ package com.hydraframework.core.mvc.patterns.relay {
 		 * Name of Relay. This is important when retrieving an instance of a
 		 * registered Relay.
 		 */
-		public var name:String;
+		private var _name : String;
+		public function set name(value : String) : void {
+			_name = value;
+		}
+		public function get name() : String {
+			if (_name == null) {
+				_name = Math.floor(Math.random() * 999999).toString();
+				_name = getQualifiedClassName(this) + "@" + (function(s : String) : String {
+					while (s.length < 6) {
+						s = "0" + s;
+					}
+					return s;
+				})(_name);
+			}
+			return _name;
+		}
 
 		public function setName(name:String):void {
 			this.name = name;

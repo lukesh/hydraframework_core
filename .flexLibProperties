@@ -2,7 +2,9 @@
 <flexLibProperties includeAllClasses="false" version="1">
   <includeClasses>
     <classEntry path="com.hydraframework.core.HydraCore"/>
+    <classEntry path="com.hydraframework.core.HydraEventMap"/>
     <classEntry path="com.hydraframework.core.HydraFramework"/>
+    <classEntry path="com.hydraframework.core.hydraframework_internal"/>
     <classEntry path="com.hydraframework.core.mvc.events.Notification"/>
     <classEntry path="com.hydraframework.core.mvc.events.Phase"/>
     <classEntry path="com.hydraframework.core.mvc.interfaces.ICommand"/>
@@ -19,8 +21,9 @@
     <classEntry path="com.hydraframework.core.mvc.patterns.relay.Relay"/>
     <classEntry path="com.hydraframework.core.registries.delegate.DelegateRegistry"/>
     <classEntry path="com.hydraframework.core.registries.delegate.interfaces.IDelegate"/>
+    <classEntry path="com.hydraframework.core.utils.ClassNotFoundError"/>
     <classEntry path="com.hydraframework.core.utils.ClassUtils"/>
-    <classEntry path="com.hydraframework.core.HydraEventMap"/>
+    <classEntry path="nl.demonsters.debugger.MonsterDebugger"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

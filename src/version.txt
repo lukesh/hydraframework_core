@@ -2,16 +2,21 @@ HydraFramework - Copyright(c) 2010 andCulture, Inc. Some rights reserved.
 
 -------------------------------------------------------------------------------
 
-Release Date: 04/01/2010
+Release Date: 04/04/2010
 
     Platform: ActionScript 3 (Flash / Flex)
      Version: 2
     Revision: 0
-       Minor: 0
+       Minor: 2
       Author: Francis Lukesh <fran@lukesh.com, flukesh@andculture.com>
      License: MIT License (http://www.opensource.org/licenses/mit-license.php)
 
 -------------------------------------------------------------------------------
+
+2.0.2	Names are now generated if null. They will be the fully qualified name
+		of the class plus @xxxxxx, where xxxxxx is a random number.
+		
+2.0.1	Fixed retrieve actor by interface bug.
 
 2.0.0	Completely removed Flex dependency for Hydra. Events that trigger
 		actor instantiation are now configurable via a HydraEventMap.

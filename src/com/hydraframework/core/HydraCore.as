@@ -4,7 +4,7 @@
  */
 package com.hydraframework.core {
 	import com.hydraframework.core.mvc.interfaces.IFacade;
-
+	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
@@ -33,8 +33,23 @@ package com.hydraframework.core {
 			}
 			this.facade = (function() : IFacade {
 					if (params.length == 0) {
-						HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> HydraCore initializing Facade with no arguments. Component will be null; Facade must be manually initialized(). Name will be generated unless assigned as a const, use interface or classreference to retrieve. EventMap will be default.");
-						return IFacade(new facadeClass());
+						/*
+						describeType does not tell us if the constructor has a ...rest parameter.
+						Try to assume that it does, but if not, we'll have to instantiate without any parameters.
+						*/
+						var f : IFacade;
+						try {
+							f = IFacade(new facadeClass(component));
+						} catch (e : Error) { }
+						if (f == null) {
+							try {
+								f = IFacade(new facadeClass());
+							} catch (e : Error) { }
+							HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> HydraCore initializing Facade with no arguments. Component will be null; Facade must be manually initialized(). Name will be generated unless assigned as a const, use interface or classreference to retrieve. EventMap will be default.");
+						} else {
+							HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> HydraCore initializing Facade with one argument. Component is assigned; Facade will attempt to automatically initialize based on eventMap. Name will be generated unless assigned as a const, use interface or classreference to retrieve. EventMap will be default.");
+						}
+						return f;
 					} else if (params.length == 1) {
 						if (params[0].@type != "String") {
 							HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> HydraCore initializing Facade with one argument. Component is assigned; Facade will attempt to automatically initialize based on eventMap. Name will be generated unless assigned as a const, use interface or classreference to retrieve. EventMap will be default.");

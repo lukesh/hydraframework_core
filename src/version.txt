@@ -2,17 +2,21 @@ HydraFramework - Copyright(c) 2010 andCulture, Inc. Some rights reserved.
 
 -------------------------------------------------------------------------------
 
-Release Date: 04/04/2010
+Release Date: 04/22/2010
 
     Platform: ActionScript 3 (Flash / Flex)
      Version: 2
     Revision: 0
-       Minor: 4
+       Minor: 5
       Author: Francis Lukesh <fran@lukesh.com, flukesh@andculture.com>
      License: MIT License (http://www.opensource.org/licenses/mit-license.php)
 
 -------------------------------------------------------------------------------
 
+2.0.5	Fixed bug where ...parameters were not being handled properly in
+		HydraCore.initialize -- worked around omission in describeType using
+		a try...catch block.
+		
 2.0.4	If passing ...parameters to super() in subclasses of Facade, etc...,
 		super() will automatically acknowledge that ...paramaters was passed
 		and process the constructor correctly.

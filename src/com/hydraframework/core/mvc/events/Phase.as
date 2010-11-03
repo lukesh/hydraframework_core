@@ -12,5 +12,6 @@ package com.hydraframework.core.mvc.events {
 		public static const RESPONSE:String = "Phase.response";
 		public static const COMPLETE:String = "Phase.complete";
 		public static const CANCEL:String = "Phase.cancel";
+		public static const FAULT:String = "Phase.fault";
 	}
 }

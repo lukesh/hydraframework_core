@@ -23,10 +23,11 @@ package com.hydraframework.core.mvc.events {
 		   to a default in the constructor. Phase should be used to access the
 		   values of these constants.
 		 */
-		private static const REQUEST:String="Phase.request";
-		private static const RESPONSE:String="Phase.response";
-		private static const COMPLETE:String="Phase.complete";
-		private static const CANCEL:String="Phase.cancel";
+		private static const PHASE_REQUEST:String="Phase.request";
+		private static const PHASE_RESPONSE:String="Phase.response";
+		private static const PHASE_COMPLETE:String="Phase.complete";
+		private static const PHASE_CANCEL:String="Phase.cancel";
+		private static const PHASE_FAULT:String="Phase.fault";
 		
 		private var _name:String;
 		
@@ -102,8 +103,8 @@ package com.hydraframework.core.mvc.events {
 		 * Notification's body. That process will run through several phases,
 		 * which we've established as constants in the Phase class. While you
 		 * can define your own phase constants, most of the time the four phase
-		 * types (Phase.REQUEST, Phase.RESPONSE, Phase.CANCEL, and
-		 * Phase.COMPLETE), are adequate to describe most processes.
+		 * types (Phase.REQUEST, Phase.RESPONSE, Phase.CANCEL, Phase.COMPLETE, 
+		 * and Phase.FAULT), are adequate to describe most processes.
 		 *
 		 * For example, you might define a process as "USER_CREATE". A
 		 * "USER_CREATE" notification might be sent from a mediator of type
@@ -161,8 +162,12 @@ package com.hydraframework.core.mvc.events {
 		public function isCancel():Boolean {
 			return phase == Phase.CANCEL;
 		}
-
-		public function Notification(name:String, body:Object=null, phase:String=REQUEST, bubbles:Boolean=false, cancelable:Boolean=false) {
+		
+		public function isFault():Boolean {
+			return phase == Phase.FAULT;
+		}
+		
+		public function Notification(name:String, body:Object=null, phase:String=PHASE_REQUEST, bubbles:Boolean=false, cancelable:Boolean=false) {
 			super(TYPE, bubbles, cancelable);
 			this.name=name;
 			this.body=body;

@@ -18,11 +18,13 @@
     <classEntry path="com.hydraframework.core.mvc.patterns.plugin.Plugin"/>
     <classEntry path="com.hydraframework.core.mvc.patterns.proxy.Proxy"/>
     <classEntry path="com.hydraframework.core.mvc.patterns.relay.Relay"/>
-    <classEntry path="com.hydraframework.core.registries.delegate.DelegateRegistry"/>
+    <classEntry path="com.hydraframework.core.registries.delegate.DependencyRegistry"/>
     <classEntry path="com.hydraframework.core.registries.delegate.interfaces.IDelegate"/>
     <classEntry path="com.hydraframework.core.utils.ClassNotFoundError"/>
     <classEntry path="com.hydraframework.core.utils.ClassUtils"/>
     <classEntry path="nl.demonsters.debugger.MonsterDebugger"/>
+    <classEntry path="com.hydraframework.core.registries.dependency.descriptor.Dependency"/>
+    <classEntry path="com.hydraframework.core.registries.dependency.interfaces.IDependency"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

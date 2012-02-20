@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="HydraMVC.as" projectUUID="eda584d1-5381-4d95-8c97-0a0a7c25f1a8" version="6">
+<actionScriptProperties mainApplicationPath="HydraMVC.as" projectUUID="eda584d1-5381-4d95-8c97-0a0a7c25f1a8" version="6">
   <compiler additionalCompilerArguments="" autoRSLOrdering="true" copyDependentFiles="false" flex3CompatMode="false" flexSDK="Flex 3.3" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin" sourceFolderPath="src" strict="true" targetPlayerVersion="10.0.12" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="1">

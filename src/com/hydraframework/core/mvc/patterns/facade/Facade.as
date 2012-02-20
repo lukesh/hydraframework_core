@@ -273,10 +273,10 @@ package com.hydraframework.core.mvc.patterns.facade {
         /**
          * Registers a dependency with the core.
          *
-         * @param interfaceClass
-         * @param concreteClass
+         * @param interfaceClass Interface class to which dependency is registered
+         * @param concreteClass Concrete implementation being registerd to the interfaceClass
          * @param registerGlobal
-         * @return	void
+         * @return void
          */
         public function registerDependency(interfaceClass:Class, concreteClass:Class, registerGlobal:Boolean = false):void {
             if (registerGlobal) {
@@ -289,10 +289,10 @@ package com.hydraframework.core.mvc.patterns.facade {
         /**
          * Registers a dependency provider with the core.
          *
-         * @param interfaceClass
-         * @param concreteClass
+         * @param interfaceClass Interface class to which dependency provider is registered
+         * @param provider Function called upon request of the supplied interfaceClass
          * @param registerGlobal
-         * @return	void
+         * @return void
          */
         public function registerDependencyProvider(interfaceClass:Class, provider:Function, registerGlobal:Boolean = false):void {
             if (registerGlobal) {
@@ -305,8 +305,9 @@ package com.hydraframework.core.mvc.patterns.facade {
         /**
          * Retrieves the dependency that implements dependencyInterface.
          *
-         * @param	Class
-         * @return	Object
+         * @param interfaceClass Interface for which to retrieve a dependency
+         * @param forceRetrieveLocal
+         * @return Object
          */
         public function retrieveDependency(interfaceClass:Class, forceRetrieveLocal:Boolean = false):Object {
             var dependency:Object;
@@ -316,11 +317,11 @@ package com.hydraframework.core.mvc.patterns.facade {
             this would always require two lookups in requests where forceRetrieveLocal == true.
             */
             if (forceRetrieveLocal) {
-                dependency = dependencyRegistry.retrieveDependencyByInterface(interfaceClass);
+                dependency = dependencyRegistry.retrieveDependency(interfaceClass);
             } else {
-                dependency = DependencyRegistry.getInstance().retrieveDependencyByInterface(interfaceClass);
+                dependency = DependencyRegistry.getInstance().retrieveDependency(interfaceClass);
                 if (!dependency) {
-                    dependency = dependencyRegistry.retrieveDependencyByInterface(interfaceClass);
+                    dependency = dependencyRegistry.retrieveDependency(interfaceClass);
                 }
             }
             return dependency;
@@ -329,31 +330,31 @@ package com.hydraframework.core.mvc.patterns.facade {
         /**
          * Removes a specific dependency.
          *
-         * @param	String
-         * @param	Class
-         * @return	void
+         * @param concreteClass Removes this dependency from the registry
+         * @param removeGlobal
+         * @return void
          */
         public function removeDependency(concreteClass:Class, removeGlobal:Boolean = false):void {
-//            if (removeGlobal) {
-//                DependencyRegistry.getInstance().removeDependency(interfaceClass);
-//            } else {
-//                dependencyRegistry.removeDependency(interfaceClass);
-//            }
+            if (removeGlobal) {
+                DependencyRegistry.getInstance().removeDependency(concreteClass);
+            } else {
+                dependencyRegistry.removeDependency(concreteClass);
+            }
         }
 
         /**
          * Removes all registered dependencies for specified interface.
          *
-         * @param	String
-         * @param	Class
-         * @return	void
+         * @param interfaceClass Interface for which to remove a dependency
+         * @param removeGlobal
+         * @return void
          */
-        public function removeDependencyByInterface(delegateInterface:Class, removeGlobal:Boolean = false):void {
-//			if (removeGlobal) {
-//				DelegateRegistry.getInstance().removeDelegatesByInterface(delegateInterface);
-//			} else {
-//				delegateRegistry.removeDelegatesByInterface(delegateInterface);
-//			}
+        public function removeDependencyByInterface(interfaceClass:Class, removeGlobal:Boolean = false):void {
+            if (removeGlobal) {
+                DependencyRegistry.getInstance().removeDependencyByInterface(interfaceClass);
+            } else {
+                dependencyRegistry.removeDependencyByInterface(interfaceClass);
+            }
         }
 
         /*

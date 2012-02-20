@@ -51,9 +51,9 @@ package com.hydraframework.core.registries.dependency {
          * @return void
          */
         public function registerDependencyProvider(interfaceClass:Class, provider:Function):void {
-            var dependency:Dependency = Dependency.CreateProvider(interfaceClass, provider);
+            var dependency:IDependency = Dependency.CreateProvider(interfaceClass, provider);
             dependencyMap[dependency.interfaceQualifiedClassName] = dependency;
-            HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> Registering dependency provider: ", dependency.interfaceQualifiedClassName, " <-> ", dependency.provider.toString(), "()");
+            HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> Registering dependency provider: ", dependency.interfaceQualifiedClassName, " <-> ", dependency.provider, "()");
         }
 
         /**
@@ -63,8 +63,8 @@ package com.hydraframework.core.registries.dependency {
          * @return Object
          */
         public function retrieveDependency(interfaceClass:Class):Object {
-            var dependencyInterfaceClassName:String = getQualifiedClassName(dependencyInterface),
-                dependency:Dependency = dependencyMap[dependencyInterfaceClassName];
+            var dependencyInterfaceClassName:String = getQualifiedClassName(interfaceClass),
+                dependency:IDependency = dependencyMap[dependencyInterfaceClassName];
 
             if (dependency === null || dependency === undefined) {
                 throw new Error("Dependency does not exist for interface '" + dependencyInterfaceClassName + "'");
@@ -88,7 +88,7 @@ package com.hydraframework.core.registries.dependency {
          * @return void
          */
         public function removeDependency(concreteClass:Class):void {
-            var concreteClassName:String = getQualifiedClassName(interfaceClass),
+            var concreteClassName:String = getQualifiedClassName(concreteClass),
                 interfaceClassName:String,
                 currentDependency:IDependency;
 

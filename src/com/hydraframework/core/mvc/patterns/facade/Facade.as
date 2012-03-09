@@ -3,6 +3,7 @@
    Your reuse is governed by the MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 package com.hydraframework.core.mvc.patterns.facade {
+
     import com.hydraframework.core.HydraFramework;
     import com.hydraframework.core.hydraframework_internal;
     import com.hydraframework.core.mvc.events.Notification;
@@ -35,6 +36,7 @@ package com.hydraframework.core.mvc.patterns.facade {
 
         public static const REGISTER:String = "Facade.register";
         public static const REMOVE:String   = "Facade.remove";
+
         private var dependencyRegistry:DependencyRegistry;
         private var commandMap:Array;
         private var mediatorMap:Array;
@@ -270,14 +272,6 @@ package com.hydraframework.core.mvc.patterns.facade {
            -----------------------------------------------------------------------
         */ //
 
-        /**
-         * Registers a dependency with the core.
-         *
-         * @param interfaceClass Interface class to which dependency is registered
-         * @param concreteClass Concrete implementation being registerd to the interfaceClass
-         * @param registerGlobal
-         * @return void
-         */
         public function registerDependency(interfaceClass:Class, concreteClass:Class, registerGlobal:Boolean = false):void {
             if (registerGlobal) {
                 DependencyRegistry.getInstance().registerDependency(interfaceClass, concreteClass);
@@ -286,14 +280,6 @@ package com.hydraframework.core.mvc.patterns.facade {
             }
         }
 
-        /**
-         * Registers a dependency provider with the core.
-         *
-         * @param interfaceClass Interface class to which dependency provider is registered
-         * @param provider Function called upon request of the supplied interfaceClass
-         * @param registerGlobal
-         * @return void
-         */
         public function registerDependencyProvider(interfaceClass:Class, provider:Function, registerGlobal:Boolean = false):void {
             if (registerGlobal) {
                 DependencyRegistry.getInstance().registerDependencyProvider(interfaceClass, provider);
@@ -302,13 +288,6 @@ package com.hydraframework.core.mvc.patterns.facade {
             }
         }
 
-        /**
-         * Retrieves the dependency that implements dependencyInterface.
-         *
-         * @param interfaceClass Interface for which to retrieve a dependency
-         * @param forceRetrieveLocal
-         * @return Object
-         */
         public function retrieveDependency(interfaceClass:Class, forceRetrieveLocal:Boolean = false):Object {
             var dependency:Object;
             /*
@@ -327,13 +306,6 @@ package com.hydraframework.core.mvc.patterns.facade {
             return dependency;
         }
 
-        /**
-         * Removes a specific dependency.
-         *
-         * @param concreteClass Removes this dependency from the registry
-         * @param removeGlobal
-         * @return void
-         */
         public function removeDependency(concreteClass:Class, removeGlobal:Boolean = false):void {
             if (removeGlobal) {
                 DependencyRegistry.getInstance().removeDependency(concreteClass);
@@ -342,13 +314,6 @@ package com.hydraframework.core.mvc.patterns.facade {
             }
         }
 
-        /**
-         * Removes all registered dependencies for specified interface.
-         *
-         * @param interfaceClass Interface for which to remove a dependency
-         * @param removeGlobal
-         * @return void
-         */
         public function removeDependencyByInterface(interfaceClass:Class, removeGlobal:Boolean = false):void {
             if (removeGlobal) {
                 DependencyRegistry.getInstance().removeDependencyByInterface(interfaceClass);
@@ -362,15 +327,7 @@ package com.hydraframework.core.mvc.patterns.facade {
            COMMANDS
            -----------------------------------------------------------------------
          */ //
-        /**
-         * Registers a command with the core. The command will run when the
-         * Facade encounters a notification with name specified by
-         * notificationName.
-         *
-         * @param	String
-         * @param	Class
-         * @return	void
-         */
+
         public function registerCommand(notificationName:String, command:Class):void {
             var commandClass:String = getQualifiedClassName(command);
 
@@ -380,36 +337,15 @@ package com.hydraframework.core.mvc.patterns.facade {
             HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> Registering command:", notificationName, "->", commandClass);
         }
 
-        /**
-         * Retrieves a specific command by the notification name it is
-         * registered with.
-         *
-         * @param	String
-         * @param	String
-         * @return	ICommand
-         */
         public function retrieveCommand(notificationName:String, commandClass:String):ICommand {
             var commandList:Array = retrieveCommandList(notificationName);
             return commandList ? new (commandList[commandClass] as Class)() as ICommand : null;
         }
 
-        /**
-         * Retrieves a list of commands registered (mapped) to a notification
-         * name.
-         *
-         * @param String
-         */
         public function retrieveCommandList(notificationName:String):Array {
             return commandMap[notificationName];
         }
 
-        /**
-         * Removes a specific command.
-         *
-         * @param	String
-         * @param	Class
-         * @return	void
-         */
         public function removeCommand(notificationName:String, command:Class):void {
             var commandClass:String = getQualifiedClassName(command);
 
@@ -425,12 +361,7 @@ package com.hydraframework.core.mvc.patterns.facade {
            MEDIATORS
            -----------------------------------------------------------------------
          */ //
-        /**
-         * Registers a Mediator with the core.
-         *
-         * @param	IMediator
-         * @return	void
-         */
+
         public function registerMediator(mediator:IMediator):void {
             if (mediatorMap[mediator.getName()]) {
                 HydraFramework.log(HydraFramework.DEBUG_SHOW_WARNINGS, "*** WARNING *** Mediator '" + mediator.getName() + "' already registered with Facade '" + this.getName() + "'; aborting registration.");
@@ -445,22 +376,10 @@ package com.hydraframework.core.mvc.patterns.facade {
             }
         }
 
-        /**
-         * Returns a registered Mediator by name.
-         *
-         * @param	String
-         * @return	IMediator
-         */
         public function retrieveMediator(mediatorName:String):IMediator {
             return mediatorMap[mediatorName] as IMediator;
         }
 
-        /**
-         * Removes a registered Mediator by name.
-         *
-         * @param	String
-         * @return	void
-         */
         public function removeMediator(mediatorName:String):void {
             var relay:IRelay = retrieveMediator(mediatorName) as IRelay;
 
@@ -477,12 +396,7 @@ package com.hydraframework.core.mvc.patterns.facade {
            PROXIES
            -----------------------------------------------------------------------
          */ //
-        /**
-         * Registers a Proxy with the core.
-         *
-         * @param	IProxy
-         * @return	void
-         */
+
         public function registerProxy(proxy:IProxy):void {
             if (proxyMap[proxy.getName()]) {
                 HydraFramework.log(HydraFramework.DEBUG_SHOW_WARNINGS, "*** WARNING *** Proxy '" + proxy.getName() + "' already registered with Facade '" + this.getName() + "'; aborting registration.");
@@ -502,22 +416,10 @@ package com.hydraframework.core.mvc.patterns.facade {
             }
         }
 
-        /**
-         * Returns a registered Proxy by name.
-         *
-         * @param	String
-         * @return	IProxy
-         */
         public function retrieveProxy(proxyName:String):IProxy {
             return proxyMap[proxyName] as IProxy;
         }
 
-        /**
-         * Removes a registered Proxy by name.
-         *
-         * @param	String
-         * @return	IProxy
-         */
         public function removeProxy(proxyName:String):void {
             var relay:IRelay = retrieveProxy(proxyName) as IRelay;
 
@@ -539,12 +441,7 @@ package com.hydraframework.core.mvc.patterns.facade {
            GENERIC RELAYS (PLUGINS)
            -----------------------------------------------------------------------
          */ //
-        /**
-         * Registers a IPlugin with the core.
-         *
-         * @param	IPlugin
-         * @return	void
-         */
+
         public function registerPlugin(plugin:IPlugin):void {
             // Only one instance of a plugin can be registered.
             if (retrievePlugin(plugin.getName())) {
@@ -567,22 +464,10 @@ package com.hydraframework.core.mvc.patterns.facade {
             }
         }
 
-        /**
-         * Returns a registered Plugin by name.
-         *
-         * @param	String
-         * @return	IPlugin
-         */
         public function retrievePlugin(pluginName:String):IPlugin {
             return pluginMap[pluginName] as IPlugin;
         }
 
-        /**
-         * Removes a registered Plugin by name.
-         *
-         * @param	String
-         * @return	IPlugin
-         */
         public function removePlugin(pluginName:String):void {
             var relay:IRelay = retrievePlugin(pluginName) as IRelay;
 
@@ -604,12 +489,7 @@ package com.hydraframework.core.mvc.patterns.facade {
            DELEGATES
            -----------------------------------------------------------------------
          */ //
-        /**
-         * Registers a delegate with the core.
-         *
-         * @param	Class
-         * @return	void
-         */
+
         public function registerDelegate(delegate:Class, registerGlobal:Boolean = false):void {
             if (registerGlobal) {
                 DelegateRegistry.getInstance().registerDelegate(delegate);
@@ -618,12 +498,6 @@ package com.hydraframework.core.mvc.patterns.facade {
             }
         }
 
-        /**
-         * Retrieves the delegate that implements delegateInterface.
-         *
-         * @param	Class
-         * @return	Object
-         */
         public function retrieveDelegate(delegateInterface:Class, forceRetrieveLocal:Boolean = false):Object {
             var delegate:Object;
             /*
@@ -642,13 +516,6 @@ package com.hydraframework.core.mvc.patterns.facade {
             return delegate;
         }
 
-        /**
-         * Removes a specific delegate.
-         *
-         * @param	String
-         * @param	Class
-         * @return	void
-         */
         public function removeDelegate(delegate:Class, removeGlobal:Boolean = false):void {
             if (removeGlobal) {
                 DelegateRegistry.getInstance().removeDelegate(delegate);
@@ -657,13 +524,6 @@ package com.hydraframework.core.mvc.patterns.facade {
             }
         }
 
-        /**
-         * Removes all registered delegates for specified interface.
-         *
-         * @param	String
-         * @param	Class
-         * @return	void
-         */
         public function removeDelegatesByInterface(delegateInterface:Class, removeGlobal:Boolean = false):void {
             if (removeGlobal) {
                 DelegateRegistry.getInstance().removeDelegatesByInterface(delegateInterface);
@@ -681,16 +541,10 @@ package com.hydraframework.core.mvc.patterns.facade {
         /**
          * @private
          */
-
         hydraframework_internal function __registerCore():void {
             registerCore();
         }
 
-        /**
-         * Override this method to register individual MVC actors with the
-         * Facade. This is where you will call your register[Relay]() methods.
-         * The order of their registration is not important.
-         */
         public function registerCore():void {
         }
 
@@ -698,13 +552,6 @@ package com.hydraframework.core.mvc.patterns.facade {
             removeCore();
         }
 
-        /**
-         * Override this method to execute specific functionality when the
-         * core is remove from the system. Events should be removed
-         * automatically, so garbage collection should handle the disposal of
-         * objects, however if you need to explicitly unregister things, do it
-         * here.
-         */
         public function removeCore():void {
         }
     }

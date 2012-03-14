@@ -66,10 +66,6 @@ package com.hydraframework.core.registries.dependency {
             var dependencyInterfaceClassName:String = getQualifiedClassName(interfaceClass),
                 dependency:IDependency = dependencyMap[dependencyInterfaceClassName];
 
-            if (dependency === null || dependency === undefined) {
-                throw new Error("Dependency does not exist for interface '" + dependencyInterfaceClassName + "'");
-            }
-
             if (dependency.hasProvider) {
                 var providerDependency:Object = dependency.provider();
                 if (!(providerDependency is dependency.interfaceClass)) {

@@ -404,6 +404,8 @@ package com.hydraframework.core.mvc.patterns.facade {
                 proxyMap[proxy.getName()] = proxy;
                 proxy.setFacade(this);
 
+                HydraFramework.log(HydraFramework.DEBUG_SHOW_INFO, "<HydraFramework> Registering proxy:", proxy.getName());
+
                 if (this.initialized) {
                     registerRelayEvents(proxy as IRelay);
                     if (proxy.getVersion() == HydraFramework.VERSION) {

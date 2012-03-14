@@ -66,6 +66,10 @@ package com.hydraframework.core.registries.dependency {
             var dependencyInterfaceClassName:String = getQualifiedClassName(interfaceClass),
                 dependency:IDependency = dependencyMap[dependencyInterfaceClassName];
 
+            if (dependency == null) {
+                return null;
+            }
+
             if (dependency.hasProvider) {
                 var providerDependency:Object = dependency.provider();
                 if (!(providerDependency is dependency.interfaceClass)) {
